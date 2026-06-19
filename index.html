@@ -1,0 +1,2322 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animedle - ทายตัวละครอนิเมะ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Kanit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --pink:#FF6B9D;--pink2:#FF8FAB;--pink-light:#FFD6E7;--pink-bg:#FFF0F7;
+  --purple:#7C3AED;--purple2:#A855F7;--purple-light:#EDE9FE;
+  --yellow:#F59E0B;--yellow-light:#FEF3C7;
+  --green:#10B981;--red:#EF4444;--blue:#3B82F6;--gray:#6B7280;
+  --bg:#FDF2F8;--white:#FFFFFF;
+  --shadow:0 4px 20px rgba(255,107,157,0.15);
+  --shadow2:0 2px 8px rgba(0,0,0,0.08);
+  --radius:16px;--radius-sm:10px;
+}
+body{
+  font-family:'Noto Sans Thai','Kanit',sans-serif;
+  background:var(--bg);
+  min-height:100vh;
+  color:#1F2937;
+}
+
+/* ====== NAVBAR ====== */
+.navbar{
+  background:var(--white);
+  box-shadow:var(--shadow2);
+  padding:0 24px;
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.logo{
+  font-family:'Kanit',sans-serif;
+  font-size:1.5rem;font-weight:800;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.logo sub{font-size:0.6rem;color:var(--pink);font-weight:400;}
+.nav-links{display:flex;gap:4px;align-items:center;}
+.nav-link{
+  padding:8px 16px;border-radius:var(--radius-sm);
+  font-size:0.9rem;font-weight:500;color:var(--gray);
+  cursor:pointer;border:none;background:none;
+  display:flex;align-items:center;gap:6px;
+  transition:all 0.2s;
+}
+.nav-link:hover,.nav-link.active{
+  background:var(--pink-light);color:var(--pink);
+}
+.nav-user{
+  display:flex;align-items:center;gap:8px;
+  background:var(--pink-light);border-radius:20px;
+  padding:6px 14px 6px 8px;cursor:pointer;
+  font-weight:600;color:var(--purple);font-size:0.9rem;
+}
+.avatar-sm{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.75rem;color:#fff;
+  flex-shrink:0;
+}
+
+/* ====== LAYOUT ====== */
+.page-wrap{
+  display:grid;
+  grid-template-columns:260px 1fr 280px;
+  gap:20px;
+  max-width:1400px;
+  margin:0 auto;
+  padding:20px;
+}
+
+/* ====== LEFT PANEL ====== */
+.left-panel{display:flex;flex-direction:column;gap:14px;}
+
+.card{
+  background:var(--white);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow2);
+}
+
+/* profile card */
+.profile-card{
+  background:linear-gradient(145deg,#fff5fb,#fff);
+  border:1.5px solid var(--pink-light);
+}
+.profile-top{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:12px;
+}
+.avatar-lg{
+  width:52px;height:52px;border-radius:50%;
+  border:3px solid var(--pink);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;font-weight:800;color:#fff;
+  flex-shrink:0;
+}
+.profile-name{font-weight:700;font-size:1rem;color:#1F2937;}
+.profile-lv{
+  display:inline-block;background:var(--purple);color:#fff;
+  font-size:0.65rem;font-weight:700;padding:1px 7px;border-radius:20px;margin-left:4px;
+}
+.profile-title{font-size:0.75rem;color:var(--gray);margin-top:1px;}
+.exp-bar-wrap{margin-top:6px;}
+.exp-bar{height:6px;background:#F3E8FF;border-radius:10px;overflow:hidden;}
+.exp-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--purple));border-radius:10px;transition:width 0.5s;}
+.exp-text{font-size:0.7rem;color:var(--gray);margin-top:3px;}
+
+.stat-rows{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.stat-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 10px;background:#fdf2f8;border-radius:var(--radius-sm);
+}
+.stat-label{font-size:0.8rem;color:var(--gray);}
+.stat-val{font-size:1rem;font-weight:700;color:#1F2937;}
+
+/* streak banner */
+.streak-row .stat-val{color:#F59E0B;}
+
+/* invite card */
+.invite-card{
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff;text-align:center;
+}
+.invite-card h4{font-size:0.9rem;font-weight:700;margin-bottom:4px;}
+.invite-card p{font-size:0.75rem;opacity:0.9;margin-bottom:10px;}
+.invite-btn{
+  background:#fff;color:var(--purple);
+  border:none;border-radius:20px;
+  padding:6px 16px;font-size:0.8rem;font-weight:700;
+  cursor:pointer;
+}
+
+/* difficulty */
+.diff-label{font-size:0.8rem;font-weight:600;color:#1F2937;margin-bottom:8px;}
+.diff-select{
+  width:100%;padding:8px 12px;
+  border:1.5px solid var(--pink-light);border-radius:var(--radius-sm);
+  background:var(--white);font-size:0.85rem;color:#1F2937;
+  font-family:inherit;outline:none;cursor:pointer;
+}
+.diff-select:focus{border-color:var(--pink);}
+
+/* legend */
+.legend-title{font-size:0.8rem;font-weight:600;color:#1F2937;margin-bottom:10px;}
+.legend-items{display:flex;flex-direction:column;gap:7px;}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:0.8rem;color:#374151;}
+.leg-dot{width:14px;height:14px;border-radius:4px;flex-shrink:0;}
+
+/* ====== CENTER PANEL ====== */
+.center-panel{display:flex;flex-direction:column;gap:16px;}
+
+/* hero */
+.hero{
+  border-radius:var(--radius);
+  background:linear-gradient(135deg,#FCE4EC,#EDE7F6,#E3F2FD);
+  padding:28px 32px;
+  position:relative;overflow:hidden;
+  min-height:140px;
+  display:flex;align-items:center;
+}
+.hero-text h1{
+  font-size:2rem;font-weight:800;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  line-height:1.2;
+}
+.hero-text p{color:var(--gray);font-size:0.9rem;margin-top:6px;}
+.hero-bubbles{
+  position:absolute;right:20px;top:0;bottom:0;
+  display:flex;align-items:center;gap:12px;opacity:0.12;
+  font-size:4rem;
+}
+
+/* daily card */
+.daily-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.daily-card{
+  background:var(--white);border-radius:var(--radius);
+  padding:16px 20px;box-shadow:var(--shadow2);
+  display:flex;align-items:center;justify-content:space-between;
+  border:1.5px solid transparent;
+  transition:border-color 0.2s;
+}
+.daily-card:hover{border-color:var(--pink-light);}
+.daily-info{display:flex;align-items:center;gap:12px;}
+.daily-icon{
+  width:40px;height:40px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+  background:var(--pink-light);
+}
+.daily-title{font-weight:700;font-size:0.9rem;color:#1F2937;}
+.daily-sub{font-size:0.75rem;color:var(--gray);}
+.daily-btn{
+  background:linear-gradient(135deg,var(--pink),var(--purple2));
+  color:#fff;border:none;border-radius:20px;
+  padding:7px 16px;font-size:0.8rem;font-weight:700;
+  cursor:pointer;white-space:nowrap;font-family:inherit;
+  transition:opacity 0.2s;
+}
+.daily-btn:hover{opacity:0.9;}
+.daily-btn.secondary{
+  background:linear-gradient(135deg,var(--yellow),#F97316);
+}
+
+/* search */
+.search-card{
+  background:var(--white);border-radius:var(--radius);
+  padding:16px 20px;box-shadow:var(--shadow2);
+}
+.search-row{display:flex;gap:10px;align-items:center;}
+.search-input-wrap{flex:1;position:relative;}
+.search-input{
+  width:100%;padding:12px 16px 12px 42px;
+  border:1.5px solid #F3E8FF;border-radius:var(--radius-sm);
+  font-size:0.95rem;font-family:inherit;outline:none;
+  background:#FAFAFA;transition:border-color 0.2s;color:#1F2937;
+}
+.search-input:focus{border-color:var(--purple);background:#fff;}
+.search-icon{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  color:var(--gray);font-size:1rem;pointer-events:none;
+}
+.suggestions{
+  position:absolute;top:calc(100% + 6px);left:0;right:0;
+  background:#fff;border:1.5px solid #F3E8FF;
+  border-radius:var(--radius-sm);max-height:240px;
+  overflow-y:auto;z-index:20;display:none;
+  box-shadow:var(--shadow);
+}
+.suggestion-item{
+  padding:10px 14px;display:flex;align-items:center;
+  gap:10px;cursor:pointer;transition:background 0.15s;
+}
+.suggestion-item:hover{background:var(--pink-light);}
+.sugg-avatar{width:34px;height:34px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;color:#fff;}
+.sugg-name{font-weight:600;font-size:0.9rem;color:#1F2937;}
+.sugg-anime{font-size:0.75rem;color:var(--gray);}
+.shuffle-btn{
+  width:44px;height:44px;border-radius:var(--radius-sm);
+  background:var(--purple-light);border:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;cursor:pointer;flex-shrink:0;
+  transition:background 0.2s;color:var(--purple);
+}
+.shuffle-btn:hover{background:var(--purple);color:#fff;}
+
+/* guess progress */
+.progress-row{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:12px;
+}
+.progress-label{font-size:0.85rem;color:var(--gray);font-weight:500;}
+.guess-dots{display:flex;gap:6px;}
+.gdot{
+  width:18px;height:18px;border-radius:50%;
+  background:#F3E8FF;border:2px solid #E9D5FF;
+  transition:all 0.3s;
+}
+.gdot.used{background:var(--red);border-color:var(--red);}
+.gdot.won{background:var(--green);border-color:var(--green);}
+.hint-link{font-size:0.8rem;color:var(--purple);cursor:pointer;font-weight:600;text-decoration:underline;}
+
+/* column headers */
+.col-headers{
+  display:grid;
+  grid-template-columns:60px 1fr 1fr 70px 90px 70px 60px 60px 80px 80px 90px;
+  gap:4px;
+  padding:0 4px;
+  margin-top:4px;
+}
+.col-h{
+  font-size:0.7rem;font-weight:700;color:var(--purple);
+  text-align:center;padding:4px 0;
+  background:var(--purple-light);border-radius:6px;
+}
+
+/* result table */
+.result-table{display:flex;flex-direction:column;gap:6px;margin-top:4px;}
+.result-row{
+  display:grid;
+  grid-template-columns:60px 1fr 1fr 70px 90px 70px 60px 60px 80px 80px 90px;
+  gap:4px;align-items:center;
+  animation:slideIn 0.4s ease;
+}
+@keyframes slideIn{
+  from{opacity:0;transform:translateY(-10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.rc{
+  border-radius:10px;padding:8px 4px;
+  text-align:center;font-size:0.75rem;font-weight:600;color:#fff;
+  display:flex;align-items:center;justify-content:center;min-height:46px;
+}
+.rc.correct{background:var(--green);}
+.rc.wrong{background:var(--red);}
+.rc.partial{background:var(--yellow);color:#fff;}
+.rc-img{
+  background:transparent!important;padding:2px!important;
+}
+.rc-img img,.rc-img .av{width:48px;height:48px;border-radius:10px;object-fit:cover;}
+.arrow{font-size:0.8rem;margin-left:2px;}
+
+/* action btns */
+.action-row{
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+  margin-top:4px;
+}
+.action-btn{
+  border:none;border-radius:20px;padding:10px 22px;
+  font-size:0.9rem;font-weight:700;cursor:pointer;
+  font-family:inherit;transition:opacity 0.2s;
+  display:flex;align-items:center;gap:7px;
+}
+.action-btn:hover{opacity:0.88;}
+.btn-new{background:linear-gradient(135deg,var(--pink),var(--purple2));color:#fff;}
+.btn-hint{background:var(--yellow-light);color:var(--yellow);}
+.btn-reveal{background:#FEE2E2;color:var(--red);}
+
+/* ====== RIGHT PANEL ====== */
+.right-panel{display:flex;flex-direction:column;gap:14px;}
+
+/* leaderboard */
+.lb-title{
+  font-weight:700;font-size:0.95rem;color:#1F2937;
+  display:flex;align-items:center;gap:6px;margin-bottom:12px;
+}
+.lb-podium{
+  display:flex;align-items:flex-end;justify-content:center;
+  gap:8px;margin-bottom:14px;
+}
+.podium-item{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.podium-avatar{
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;color:#fff;position:relative;
+}
+.podium-1 .podium-avatar{width:52px;height:52px;font-size:1rem;border:3px solid var(--yellow);}
+.podium-2 .podium-avatar,.podium-3 .podium-avatar{width:42px;height:42px;font-size:0.85rem;border:2px solid #D1D5DB;}
+.podium-3 .podium-avatar{border-color:#CD7F32;}
+.podium-crown{position:absolute;top:-12px;font-size:0.9rem;}
+.podium-name{font-size:0.72rem;font-weight:700;color:#1F2937;}
+.podium-score{font-size:0.68rem;color:var(--gray);}
+.podium-rank{
+  font-size:0.65rem;font-weight:800;padding:1px 6px;border-radius:10px;
+}
+.rank-1{background:var(--yellow-light);color:var(--yellow);}
+.rank-2{background:#F3F4F6;color:#374151;}
+.rank-3{background:#FEF3C7;color:#92400E;}
+
+.lb-list{display:flex;flex-direction:column;gap:5px;}
+.lb-row{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 8px;border-radius:var(--radius-sm);
+  transition:background 0.15s;cursor:default;
+}
+.lb-row:hover{background:var(--pink-light);}
+.lb-row.me{background:var(--purple-light);}
+.lb-num{font-size:0.8rem;font-weight:700;color:var(--gray);width:22px;text-align:center;}
+.lb-av{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:#fff;flex-shrink:0;}
+.lb-name{flex:1;font-size:0.82rem;font-weight:600;color:#1F2937;}
+.lb-pts{font-size:0.8rem;font-weight:700;color:var(--purple);}
+.lb-more{
+  text-align:center;font-size:0.78rem;color:var(--purple);
+  font-weight:600;cursor:pointer;margin-top:6px;
+  padding:6px;border-radius:var(--radius-sm);
+}
+.lb-more:hover{background:var(--purple-light);}
+
+/* recent games */
+.recent-title{font-weight:700;font-size:0.9rem;color:#1F2937;display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+.recent-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px;border-radius:var(--radius-sm);
+  transition:background 0.15s;cursor:default;
+  border-bottom:1px solid #F9FAFB;
+}
+.recent-item:last-child{border-bottom:none;}
+.recent-item:hover{background:var(--pink-light);}
+.recent-av{width:38px;height:38px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#fff;}
+.recent-info{flex:1;}
+.recent-date{font-size:0.72rem;color:var(--gray);}
+.recent-result{font-size:0.78rem;font-weight:600;}
+.result-win{color:var(--green);}
+.result-lose{color:var(--red);}
+.recent-pts{font-size:0.78rem;font-weight:700;color:var(--purple);}
+
+/* ====== LOGIN SCREEN ====== */
+.login-overlay{
+  position:fixed;inset:0;
+  background:linear-gradient(135deg,#FDF2F8,#EDE9FE);
+  display:flex;align-items:center;justify-content:center;
+  z-index:100;
+}
+.login-box{
+  background:#fff;border-radius:24px;
+  padding:36px 32px;max-width:380px;width:90%;
+  box-shadow:0 20px 60px rgba(255,107,157,0.2);
+  text-align:center;
+}
+.login-logo{
+  font-size:2rem;font-weight:800;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:4px;
+}
+.login-sub{font-size:0.85rem;color:var(--gray);margin-bottom:24px;}
+.login-input{
+  width:100%;padding:13px 16px;
+  border:2px solid #F3E8FF;border-radius:var(--radius-sm);
+  font-size:1rem;font-family:inherit;outline:none;
+  transition:border-color 0.2s;color:#1F2937;
+  margin-bottom:12px;
+}
+.login-input:focus{border-color:var(--purple);}
+.login-btn{
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;border:none;border-radius:var(--radius-sm);
+  font-size:1rem;font-weight:700;font-family:inherit;
+  cursor:pointer;transition:opacity 0.2s;
+}
+.login-btn:hover{opacity:0.9;}
+.login-hint{font-size:0.75rem;color:var(--gray);margin-top:12px;}
+
+/* ====== MODAL ====== */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);
+  display:flex;align-items:center;justify-content:center;z-index:200;
+  backdrop-filter:blur(4px);
+}
+.modal-box{
+  background:#fff;border-radius:24px;padding:28px 24px;
+  max-width:360px;width:90%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.2);
+  animation:popIn 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
+  text-align:center;
+}
+@keyframes popIn{from{transform:scale(0.6);opacity:0;}to{transform:scale(1);opacity:1;}}
+.modal-title{font-size:1.3rem;font-weight:800;margin-bottom:4px;}
+.modal-win{color:var(--green);}
+.modal-lose{color:var(--red);}
+.modal-char-avatar{
+  width:100px;height:100px;border-radius:18px;
+  margin:12px auto;display:flex;align-items:center;justify-content:center;
+  font-size:2.5rem;font-weight:800;color:#fff;
+  border:4px solid var(--pink-light);
+}
+.modal-char-name{font-size:1.2rem;font-weight:800;color:#1F2937;margin-bottom:4px;}
+.modal-char-anime{font-size:0.85rem;color:var(--gray);margin-bottom:14px;}
+.modal-props{
+  display:grid;grid-template-columns:1fr 1fr;gap:6px;
+  margin-bottom:16px;text-align:left;
+}
+.modal-prop{
+  background:var(--bg);border-radius:10px;
+  padding:7px 10px;
+}
+.modal-prop-label{font-size:0.68rem;color:var(--gray);font-weight:600;text-transform:uppercase;}
+.modal-prop-val{font-size:0.85rem;font-weight:700;color:#1F2937;}
+.modal-score{
+  background:linear-gradient(135deg,var(--pink-light),var(--purple-light));
+  border-radius:12px;padding:10px;margin-bottom:14px;
+  font-size:0.9rem;font-weight:700;color:var(--purple);
+}
+.modal-btns{display:flex;flex-direction:column;gap:8px;}
+.modal-btn-next{
+  width:100%;padding:12px;background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;
+  font-family:inherit;cursor:pointer;
+}
+.modal-btn-close{
+  width:100%;padding:10px;background:var(--bg);color:var(--gray);
+  border:none;border-radius:12px;font-size:0.9rem;font-weight:600;
+  font-family:inherit;cursor:pointer;
+}
+
+.hidden{display:none!important;}
+
+/* ====== FOOTER ====== */
+footer{
+  text-align:center;padding:20px;
+  font-size:0.78rem;color:var(--gray);
+  border-top:1px solid #F3F4F6;margin-top:20px;
+  background:#fff;
+}
+
+/* responsive */
+@media(max-width:1100px){
+  .page-wrap{grid-template-columns:220px 1fr;} 
+  .right-panel{display:none;}
+}
+@media(max-width:700px){
+  .page-wrap{grid-template-columns:1fr;padding:12px;}
+  .left-panel{display:none;}
+  .col-headers,.result-row{
+    grid-template-columns:44px 80px 70px 60px 75px 55px 50px 50px 70px 70px 75px;
+    font-size:0.65rem;
+  }
+  .hero{padding:18px;}
+  .hero-text h1{font-size:1.4rem;}
+}
+/* ====== THEMES ====== */
+body.theme-dark{
+  --pink:#a78bfa;--pink2:#c4b5fd;--pink-light:#2d1b69;--pink-bg:#1e1b4b;
+  --purple:#7c3aed;--purple2:#a855f7;--purple-light:#2e1065;
+  --yellow:#fbbf24;--yellow-light:#451a03;
+  --green:#34d399;--red:#f87171;--blue:#60a5fa;--gray:#9ca3af;
+  --bg:#0f0a2e;--white:#1e1b4b;--shadow:0 4px 20px rgba(124,58,237,0.3);
+  --shadow2:0 2px 8px rgba(0,0,0,0.4);
+  color:#e9d5ff;
+}
+body.theme-dark .navbar{background:#1e1b4b;border-bottom:1px solid #4c1d95;}
+body.theme-dark .card{background:#1e1b4b;border:1px solid #4c1d95;}
+body.theme-dark .hero{background:linear-gradient(135deg,#2e1065,#1e1b4b,#0f0a2e);}
+body.theme-dark .search-input{background:#2e1065;border-color:#4c1d95;color:#e9d5ff;}
+body.theme-dark .search-card,.body.theme-dark .daily-card{background:#1e1b4b;}
+body.theme-dark footer{background:#1e1b4b;border-color:#4c1d95;}
+body.theme-dark .stat-row{background:#2e1065;}
+body.theme-dark .login-overlay{background:linear-gradient(135deg,#0f0a2e,#1e1b4b);}
+body.theme-dark .login-box{background:#1e1b4b;border:1px solid #7c3aed;}
+
+body.theme-ocean{
+  --pink:#0ea5e9;--pink2:#38bdf8;--pink-light:#e0f2fe;--pink-bg:#f0f9ff;
+  --purple:#0369a1;--purple2:#0284c7;--purple-light:#dbeafe;
+  --yellow:#f59e0b;--green:#10b981;--red:#ef4444;--gray:#64748b;
+  --bg:#f0f9ff;--white:#ffffff;
+}
+body.theme-ocean .hero{background:linear-gradient(135deg,#bae6fd,#dbeafe,#e0f2fe);}
+body.theme-ocean .logo{background:linear-gradient(135deg,#0ea5e9,#0369a1);-webkit-background-clip:text;background-clip:text;color:transparent;}
+body.theme-ocean .nav-link.active,.body.theme-ocean .nav-link:hover{background:#e0f2fe;color:#0369a1;}
+
+body.theme-forest{
+  --pink:#16a34a;--pink2:#22c55e;--pink-light:#dcfce7;--pink-bg:#f0fdf4;
+  --purple:#15803d;--purple2:#16a34a;--purple-light:#bbf7d0;
+  --yellow:#ca8a04;--green:#16a34a;--red:#dc2626;--gray:#6b7280;
+  --bg:#f0fdf4;--white:#ffffff;
+}
+body.theme-forest .hero{background:linear-gradient(135deg,#bbf7d0,#dcfce7,#d1fae5);}
+body.theme-forest .logo{background:linear-gradient(135deg,#16a34a,#166534);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+body.theme-sunset{
+  --pink:#f97316;--pink2:#fb923c;--pink-light:#ffedd5;--pink-bg:#fff7ed;
+  --purple:#c2410c;--purple2:#ea580c;--purple-light:#fed7aa;
+  --yellow:#eab308;--green:#16a34a;--red:#dc2626;--gray:#6b7280;
+  --bg:#fff7ed;--white:#ffffff;
+}
+body.theme-sunset .hero{background:linear-gradient(135deg,#fed7aa,#ffedd5,#fef3c7);}
+body.theme-sunset .logo{background:linear-gradient(135deg,#f97316,#dc2626);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+body.theme-cherry{
+  --pink:#db2777;--pink2:#ec4899;--pink-light:#fce7f3;--pink-bg:#fdf2f8;
+  --purple:#be185d;--purple2:#db2777;--purple-light:#fbcfe8;
+  --yellow:#d97706;--green:#059669;--red:#dc2626;--gray:#6b7280;
+  --bg:#fdf2f8;--white:#ffffff;
+}
+body.theme-cherry .hero{background:linear-gradient(135deg,#fbcfe8,#fce7f3,#fdf4ff);}
+
+/* ====== COIN DISPLAY ====== */
+.coin-display{
+  display:flex;align-items:center;gap:5px;
+  background:var(--yellow-light);border-radius:20px;
+  padding:5px 12px;font-size:0.85rem;font-weight:700;color:var(--yellow);
+  cursor:default;
+}
+
+/* ====== SHOP MODAL ====== */
+.shop-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);
+  display:none;align-items:center;justify-content:center;z-index:300;
+  backdrop-filter:blur(6px);
+}
+.shop-box{
+  background:var(--white);border-radius:24px;
+  width:min(680px,95vw);max-height:85vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  animation:popIn 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+.shop-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 24px;border-bottom:1px solid var(--pink-light);
+  position:sticky;top:0;background:var(--white);z-index:1;
+  border-radius:24px 24px 0 0;
+}
+.shop-header h2{font-size:1.2rem;font-weight:800;display:flex;align-items:center;gap:8px;}
+.shop-close{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--gray);}
+.shop-coin-badge{
+  display:flex;align-items:center;gap:6px;
+  background:var(--yellow-light);border-radius:20px;
+  padding:6px 14px;font-weight:700;color:var(--yellow);font-size:0.9rem;
+}
+.shop-section{padding:20px 24px;}
+.shop-section-title{font-size:0.85rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px;}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;}
+.shop-item{
+  border:2px solid var(--pink-light);border-radius:16px;
+  padding:16px;text-align:center;cursor:pointer;
+  transition:all 0.2s;position:relative;
+  background:var(--white);
+}
+.shop-item:hover{border-color:var(--pink);transform:translateY(-2px);box-shadow:var(--shadow);}
+.shop-item.owned{border-color:var(--green);background:rgba(16,185,129,0.05);}
+.shop-item.equipped{border-color:var(--purple);background:var(--purple-light);}
+.shop-item.cant-afford{opacity:0.55;cursor:not-allowed;}
+.shop-item.cant-afford:hover{transform:none;box-shadow:none;}
+.theme-preview{
+  width:100%;height:70px;border-radius:10px;margin-bottom:10px;
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+}
+.item-name{font-size:0.9rem;font-weight:700;color:inherit;margin-bottom:4px;}
+.item-desc{font-size:0.72rem;color:var(--gray);margin-bottom:10px;}
+.item-price{
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--yellow-light);color:var(--yellow);
+  font-size:0.8rem;font-weight:700;padding:3px 10px;border-radius:20px;
+}
+.item-badge{
+  position:absolute;top:8px;right:8px;
+  font-size:0.65rem;font-weight:700;padding:2px 7px;border-radius:10px;
+}
+.badge-owned{background:var(--green);color:#fff;}
+.badge-equipped{background:var(--purple);color:#fff;}
+
+/* level-up toast */
+.levelup-toast{
+  position:fixed;top:70px;right:20px;z-index:400;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;border-radius:16px;padding:14px 20px;
+  font-weight:700;font-size:0.95rem;
+  box-shadow:0 8px 30px rgba(0,0,0,0.2);
+  animation:slideInRight 0.4s ease, fadeOut 0.4s ease 3.5s forwards;
+  display:flex;align-items:center;gap:10px;
+}
+@keyframes slideInRight{from{transform:translateX(120%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+@keyframes fadeOut{to{opacity:0;transform:translateX(120%);}}
+/* ====== MINI GAME MODAL ====== */
+.minigame-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.65);
+  display:none;align-items:center;justify-content:center;z-index:300;
+  backdrop-filter:blur(6px);
+}
+.minigame-box{
+  background:var(--white);border-radius:24px;
+  width:min(480px,94vw);
+  box-shadow:0 20px 60px rgba(0,0,0,0.25);
+  animation:popIn 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
+  overflow:hidden;
+}
+.mg-header{
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  padding:20px 24px;color:#fff;text-align:center;
+}
+.mg-header h2{font-size:1.2rem;font-weight:800;margin-bottom:2px;}
+.mg-header p{font-size:0.8rem;opacity:0.85;}
+.mg-badge{
+  display:inline-block;background:rgba(255,255,255,0.2);
+  border-radius:20px;padding:3px 12px;font-size:0.75rem;margin-top:6px;
+}
+.mg-body{padding:24px;}
+.mg-emoji-wrap{
+  text-align:center;margin-bottom:20px;
+  background:var(--pink-bg);border-radius:16px;padding:20px;
+}
+.mg-emojis{font-size:2.8rem;letter-spacing:8px;line-height:1.4;}
+.mg-hint-line{font-size:0.78rem;color:var(--gray);margin-top:8px;}
+.mg-choices{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;
+}
+.mg-choice{
+  padding:12px 10px;border:2px solid var(--pink-light);
+  border-radius:12px;background:var(--white);
+  font-size:0.88rem;font-weight:600;color:#1F2937;
+  cursor:pointer;text-align:center;
+  transition:all 0.18s;font-family:inherit;
+}
+.mg-choice:hover:not(:disabled){
+  border-color:var(--pink);background:var(--pink-light);transform:translateY(-1px);
+}
+.mg-choice.correct{background:#dcfce7;border-color:var(--green);color:var(--green);}
+.mg-choice.wrong{background:#fee2e2;border-color:var(--red);color:var(--red);}
+.mg-choice:disabled{cursor:not-allowed;}
+.mg-result{
+  text-align:center;padding:14px;border-radius:12px;
+  font-size:0.95rem;font-weight:700;margin-bottom:14px;display:none;
+}
+.mg-result.win{background:#dcfce7;color:var(--green);}
+.mg-result.lose{background:#fee2e2;color:var(--red);}
+.mg-exp-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--purple-light);color:var(--purple);
+  border-radius:20px;padding:4px 12px;font-size:0.82rem;font-weight:700;
+  margin-left:8px;
+}
+.mg-footer{
+  display:flex;gap:10px;
+}
+.mg-btn{
+  flex:1;padding:11px;border:none;border-radius:12px;
+  font-size:0.92rem;font-weight:700;cursor:pointer;font-family:inherit;
+  transition:opacity 0.2s;
+}
+.mg-btn-close{background:var(--pink-bg);color:var(--gray);}
+.mg-btn-next{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;}
+.mg-btn:hover{opacity:0.88;}
+.mg-done-wrap{text-align:center;padding:20px 24px 24px;}
+.mg-done-wrap .mg-done-icon{font-size:3rem;margin-bottom:8px;}
+.mg-done-wrap h3{font-size:1.1rem;font-weight:800;margin-bottom:6px;}
+.mg-done-wrap p{font-size:0.85rem;color:var(--gray);}
+.mg-timer{
+  font-size:0.78rem;color:var(--pink);font-weight:600;margin-top:10px;
+}
+/* daily card played state */
+.daily-card.played{opacity:0.7;}
+.daily-card.played .daily-btn{background:#9CA3AF;cursor:not-allowed;}
+/* ====== CHAR OF DAY MODAL ====== */
+.cod-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.65);
+  display:none;align-items:center;justify-content:center;z-index:300;
+  backdrop-filter:blur(6px);
+}
+.cod-box{
+  background:var(--white);border-radius:24px;
+  width:min(520px,95vw);max-height:88vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,0.25);
+  animation:popIn 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+.cod-header{
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  padding:22px 24px 18px;color:#fff;position:relative;
+}
+.cod-date-badge{
+  font-size:0.72rem;background:rgba(255,255,255,0.2);
+  border-radius:20px;padding:3px 10px;display:inline-block;margin-bottom:8px;
+}
+.cod-header h2{font-size:1rem;font-weight:700;opacity:0.9;margin-bottom:10px;}
+.cod-char-row{display:flex;align-items:center;gap:14px;}
+.cod-avatar{
+  width:80px;height:80px;border-radius:16px;
+  border:3px solid rgba(255,255,255,0.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;font-weight:800;color:#fff;flex-shrink:0;
+  overflow:hidden;
+}
+.cod-avatar img{
+  width:100%;height:100%;object-fit:cover;object-position:top center;
+  border-radius:13px;
+}
+.cod-name{font-size:1.3rem;font-weight:800;}
+.cod-anime{font-size:0.82rem;opacity:0.85;margin-top:2px;}
+.cod-role-badge{
+  display:inline-block;background:rgba(255,255,255,0.2);
+  border-radius:20px;padding:2px 10px;font-size:0.72rem;margin-top:5px;
+}
+.cod-body{padding:20px 22px;}
+.cod-section{margin-bottom:18px;}
+.cod-section-title{
+  font-size:0.72rem;font-weight:800;color:var(--purple);
+  text-transform:uppercase;letter-spacing:0.07em;
+  margin-bottom:8px;display:flex;align-items:center;gap:5px;
+}
+.cod-bio{
+  font-size:0.88rem;color:#374151;line-height:1.7;
+}
+.cod-stats-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+}
+.cod-stat{
+  background:var(--pink-bg);border-radius:10px;padding:10px 12px;
+}
+.cod-stat-label{font-size:0.68rem;color:var(--gray);font-weight:600;}
+.cod-stat-val{font-size:0.92rem;font-weight:700;color:#1F2937;margin-top:2px;}
+.cod-quote{
+  background:var(--purple-light);border-left:4px solid var(--purple);
+  border-radius:0 10px 10px 0;padding:12px 14px;
+  font-size:0.85rem;color:var(--purple);font-style:italic;line-height:1.6;
+}
+.cod-close-btn{
+  width:100%;padding:12px;background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;border:none;border-radius:12px;
+  font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;
+  margin-top:4px;transition:opacity 0.2s;
+}
+.cod-close-btn:hover{opacity:0.88;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="loginOverlay" style="display:flex;">
+  <div class="login-box">
+    <div class="login-logo">🎯 Animedle</div>
+    <div style="font-size:0.7rem;color:var(--pink);margin-bottom:8px;">アニメドル</div>
+    <p class="login-sub">ท้าทายความรู้อนิเมะของคุณ!</p>
+    <input class="login-input" id="loginName" type="text" placeholder="ใส่ชื่อผู้เล่น..." maxlength="20" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">✨ เริ่มเล่นเลย!</button>
+    <p class="login-hint">ระบบจะจำชื่อและคะแนนของคุณไว้ในเบราว์เซอร์</p>
+  </div>
+</div>
+
+<!-- MODAL REVEAL -->
+<div class="modal-overlay" id="revealModal" style="display:none;">
+  <div class="modal-box" id="revealModalContent"></div>
+</div>
+
+<!-- SHOP MODAL -->
+<div class="shop-overlay" id="shopOverlay">
+  <div class="shop-box">
+    <div class="shop-header">
+      <h2>🛍️ ร้านค้า</h2>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="shop-coin-badge">🪙 <span id="shopCoinDisplay">0</span> เหรียญ</div>
+        <button class="shop-close" onclick="closeShop()">✕</button>
+      </div>
+    </div>
+    <div class="shop-section">
+      <div class="shop-section-title">🎨 ธีม UI</div>
+      <div class="shop-grid" id="shopThemeGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">🎯 Animedle <sub>アニメドル</sub></div>
+  <div class="nav-links">
+    <button class="nav-link active">🏠 หน้าหลัก</button>
+    <button class="nav-link" onclick="openShop()">🛍️ ร้านค้า</button>
+    <button class="nav-link" onclick="doLogout()">🚪 ออก</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="coin-display">🪙 <span id="navCoins">0</span></div>
+    <div class="nav-user" id="navUser">
+    <div class="avatar-sm" id="navAvatar" style="background:#ccc;"></div>
+    <span id="navName">-</span>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="page-wrap">
+
+  <!-- LEFT -->
+  <aside class="left-panel">
+
+    <!-- Profile -->
+    <div class="card profile-card">
+      <div class="profile-top">
+        <div class="avatar-lg" id="profileAvatar"></div>
+        <div>
+          <div class="profile-name" id="profileName">-</div>
+          <span class="profile-lv" id="profileLv">Lv. 1</span>
+          <div class="profile-title">นักทายอนิเมะมือใหม่</div>
+        </div>
+      </div>
+      <div class="exp-bar-wrap">
+        <div class="exp-bar"><div class="exp-fill" id="expFill" style="width:0%"></div></div>
+        <div class="exp-text" id="expText">EXP 0 / 100</div>
+      </div>
+      <div class="stat-rows">
+        <div class="stat-row streak-row">
+          <div style="display:flex;align-items:center;gap:6px;">🔥 <span class="stat-label">Day Streak</span></div>
+          <div class="stat-val" id="statStreak">0</div>
+        </div>
+        <div class="stat-row">
+          <div style="display:flex;align-items:center;gap:6px;">🏆 <span class="stat-label">คะแนนรวม</span></div>
+          <div class="stat-val" id="statScore">0</div>
+        </div>
+        <div class="stat-row">
+          <div style="display:flex;align-items:center;gap:6px;">🎮 <span class="stat-label">เกมที่เล่น</span></div>
+          <div class="stat-val" id="statGames">0</div>
+        </div>
+        <div class="stat-row">
+          <div style="display:flex;align-items:center;gap:6px;">⭐ <span class="stat-label">ตัวละครที่ปลดล็อก</span></div>
+          <div class="stat-val" id="statWins">0</div>
+        </div>
+        <div class="stat-row">
+          <div style="display:flex;align-items:center;gap:6px;">🪙 <span class="stat-label">เหรียญสะสม</span></div>
+          <div class="stat-val" id="statCoins" style="color:var(--yellow);">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Difficulty -->
+    <div class="card">
+      <div class="diff-label">⚙️ ความยาก</div>
+      <select class="diff-select" id="diffSelect" onchange="changeDifficulty()">
+        <option value="easy">ง่าย (12 ครั้ง)</option>
+        <option value="normal" selected>ปานกลาง (8 ครั้ง)</option>
+        <option value="hard">ยาก (5 ครั้ง)</option>
+      </select>
+    </div>
+
+    <!-- Legend -->
+    <div class="card">
+      <div class="legend-title">📖 คำอธิบายสี</div>
+      <div class="legend-items">
+        <div class="legend-item"><div class="leg-dot" style="background:var(--green)"></div> ตรงกัน</div>
+        <div class="legend-item"><div class="leg-dot" style="background:var(--yellow)"></div> ใกล้เคียง / ตรงบางส่วน</div>
+        <div class="legend-item"><div class="leg-dot" style="background:var(--red)"></div> ไม่ตรงกัน</div>
+        <div class="legend-item"><div class="leg-dot" style="background:#9CA3AF"></div> ยังไม่เดา</div>
+      </div>
+    </div>
+
+    <!-- Invite -->
+    <div class="card invite-card">
+      <h4>🎉 เชิญเพื่อนมาเล่น!</h4>
+      <p>รับโบนัสคะแนนเพิ่ม!</p>
+      <button class="invite-btn" onclick="copyLink()">📤 แชร์ลิงก์</button>
+    </div>
+
+  </aside>
+
+  <!-- CENTER -->
+  <main class="center-panel">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-text">
+        <h1>ทายตัวละครอนิเมะ</h1>
+        <p>ท้าทายความรู้อนิเมะของคุณ!</p>
+      </div>
+      <div class="hero-bubbles">⚔️ 🌙 ✨</div>
+    </div>
+
+    <!-- Daily + Reward -->
+<!-- MINI GAME MODAL -->
+<div class="minigame-overlay" id="mgOverlay">
+  <div class="minigame-box" id="mgBox"></div>
+</div>
+
+<!-- CHAR OF DAY MODAL -->
+<div class="cod-overlay" id="codOverlay">
+  <div class="cod-box" id="codBox"></div>
+</div>
+
+    <div class="daily-row">
+      <div class="daily-card" id="dailyMgCard">
+        <div class="daily-info">
+          <div class="daily-icon">🎮</div>
+          <div>
+            <div class="daily-title">มินิเกมประจำวัน</div>
+            <div class="daily-sub">เดาตัวละครจากอีโมจิ! รับ EXP พิเศษ</div>
+          </div>
+        </div>
+        <button class="daily-btn" id="mgOpenBtn" onclick="openMiniGame()">เล่นเลย!</button>
+      </div>
+      <div class="daily-card" onclick="openCharOfDay()" style="cursor:pointer;">
+        <div class="daily-info">
+          <div class="daily-icon" style="background:var(--purple-light);">🌟</div>
+          <div>
+            <div class="daily-title">ตัวละครประจำวัน</div>
+            <div class="daily-sub" id="todayCharName">กดเพื่อดูประวัติ</div>
+          </div>
+        </div>
+        <button class="daily-btn" style="background:linear-gradient(135deg,var(--purple),var(--purple2));" onclick="openCharOfDay()">ดูประวัติ</button>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-card">
+      <div class="search-row">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-input" id="charInput" type="text" placeholder="ค้นหาชื่อตัวละครอนิเมะ..." autocomplete="off" id="charInput">
+          <div class="suggestions" id="suggestions"></div>
+        </div>
+        <button class="shuffle-btn" onclick="resetGame(true)" title="สุ่มตัวละครใหม่">🔀</button>
+      </div>
+
+      <div class="progress-row">
+        <span class="progress-label">จำนวนครั้งที่เดา: <b id="guessNum">0</b> / <b id="maxGuessDisplay">8</b></span>
+        <div class="guess-dots" id="guessDots"></div>
+        <span class="hint-link" onclick="revealAnswer()">💡 วิธีเล่น / เฉลย</span>
+      </div>
+    </div>
+
+    <!-- Column headers -->
+    <div class="col-headers">
+      <div class="col-h">รูป</div>
+      <div class="col-h">ชื่อ</div>
+      <div class="col-h">อนิเมะ</div>
+      <div class="col-h">เพศ</div>
+      <div class="col-h">เผ่าพันธุ์</div>
+      <div class="col-h">สีผม</div>
+      <div class="col-h">สูง</div>
+      <div class="col-h">อายุ</div>
+      <div class="col-h">ประเภท</div>
+      <div class="col-h">สถานะ</div>
+      <div class="col-h">สังกัด</div>
+    </div>
+
+    <!-- Result rows -->
+    <div class="result-table" id="resultBody"></div>
+
+    <!-- Action buttons -->
+    <div class="action-row">
+      <button class="action-btn btn-new" onclick="resetGame(true)">🎲 เริ่มเกมใหม่ (สุ่มตัวละครใหม่)</button>
+      <button class="action-btn btn-reveal" onclick="revealAnswer()">🔎 เฉลยคำตอบ (ยอมแพ้)</button>
+    </div>
+
+  </main>
+
+  <!-- RIGHT -->
+  <aside class="right-panel">
+
+    <!-- Leaderboard -->
+    <div class="card">
+      <div class="lb-title">🏆 ชาร์ตอันดับ</div>
+      <div class="lb-podium" id="lbPodium"></div>
+      <div class="lb-list" id="lbList"></div>
+      <div class="lb-more">📊 ดูอันดับทั้งหมด</div>
+    </div>
+
+    <!-- Recent -->
+    <div class="card">
+      <div class="recent-title">🕹️ เกมล่าสุดของคุณ</div>
+      <div id="recentGames">
+        <div style="font-size:0.8rem;color:var(--gray);text-align:center;padding:12px;">ยังไม่มีประวัติการเล่น</div>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<footer>© 2025 Animedle — ทายตัวละครอนิเมะสุดมันส์!</footer>
+
+<!-- ═══════════════════════════════════════════════
+     🔥 FIREBASE CONFIG
+     วางค่า Config จาก Firebase Console ตรงนี้เลย
+     ═══════════════════════════════════════════════ -->
+<script type="module">
+import { initializeApp }         from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, orderBy, limit, getDocs, serverTimestamp }
+                                  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInAnonymously, onAuthStateChanged }
+                                  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+// ─── ใส่ค่าจาก Firebase Console ตรงนี้ ───
+const firebaseConfig = {
+  apiKey:            "AIzaSyD1RR3OBoWWYUJexlkcROWbFylgDNQdwRw",
+  authDomain:        "animedle-5b25b.firebaseapp.com",
+  projectId:         "animedle-5b25b",
+  storageBucket:     "animedle-5b25b.firebasestorage.app",
+  messagingSenderId: "691399776174",
+  appId:             "1:691399776174:web:a0294806303a70a0181a3f",
+  measurementId:     "G-77NQ00P0ZY"
+};
+// ──────────────────────────────────────────
+
+const CONFIGURED = firebaseConfig.apiKey !== "YOUR_API_KEY";
+
+let app, db, auth, fbUid;
+
+if(CONFIGURED){
+  app  = initializeApp(firebaseConfig);
+  db   = getFirestore(app);
+  auth = getAuth(app);
+}
+
+// ── expose to global scope for main script ──
+window._fb = {
+  ready: false,
+  uid: null,
+
+  async init(displayName){
+    if(!CONFIGURED) return;
+    return new Promise(resolve => {
+      onAuthStateChanged(auth, async user => {
+        if(!user) user = (await signInAnonymously(auth)).user;
+        fbUid = user.uid;
+        window._fb.uid  = fbUid;
+        window._fb.ready = true;
+
+        // ensure profile doc exists
+        const ref = doc(db, 'players', fbUid);
+        const snap = await getDoc(ref);
+        if(!snap.exists()){
+          await setDoc(ref, {
+            displayName,
+            wins:0, streak:0, bestStreak:0,
+            score:0, games:0, coins:0, recent:[]
+          });
+        } else if(!snap.data().displayName){
+          await updateDoc(ref, { displayName });
+        }
+        resolve();
+      });
+    });
+  },
+
+  async loadProfile(){
+    if(!CONFIGURED||!fbUid) return null;
+    const snap = await getDoc(doc(db,'players',fbUid));
+    return snap.exists() ? snap.data() : null;
+  },
+
+  async saveProfile(data){
+    if(!CONFIGURED||!fbUid) return;
+    await setDoc(doc(db,'players',fbUid), data, {merge:true});
+  },
+
+  async getLeaderboard(){
+    if(!CONFIGURED) return [];
+    const q = query(collection(db,'players'), orderBy('score','desc'), limit(10));
+    const snaps = await getDocs(q);
+    return snaps.docs.map(d => ({id:d.id, ...d.data()}));
+  }
+};
+
+if(!CONFIGURED){
+  console.warn('⚠️ Firebase ยังไม่ได้ตั้งค่า — ใช้ localStorage แทน');
+}
+</script>
+
+<script>
+const characters = [
+  {name:"มังกี ดี ลูฟี่", img:"https://i.imgur.com/EqTGCmi.gif", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:174, age:19, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
+  {name:"โรโรโนอา โซโร", img:"https://cdn.myanimelist.net/images/characters/3/100534.jpg", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"เขียว", height:181, age:21, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
+  {name:"นามิ", anime:"One Piece", gender:"หญิง", species:"มนุษย์", hair:"ส้ม", height:170, age:20, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
+  {name:"อุซอปป์", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:176, age:19, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
+  {name:"ซันจิ", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:180, age:21, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
+  {name:"โทนี โทนี ช็อปเปอร์", anime:"One Piece", gender:"ชาย", species:"กวางเรนเดียร์", hair:"น้ำตาล", height:90, age:17, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
+  {name:"นิโก้ โรบิน", anime:"One Piece", gender:"หญิง", species:"มนุษย์", hair:"ดำ", height:188, age:30, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
+  {name:"แฟรงกี้", anime:"One Piece", gender:"ชาย", species:"ไซบอร์ก", hair:"ฟ้า", height:240, age:36, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
+  {name:"บรู๊ค", anime:"One Piece", gender:"ชาย", species:"มนุษย์ (โครงกระดูก)", hair:"ขาว", height:277, age:90, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
+  {name:"จินเบ", anime:"One Piece", gender:"ชาย", species:"เงือกฉลาม", hair:"น้ำเงิน", height:301, age:46, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
+  {name:"พอร์ทกาส ดี เอซ", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:185, age:20, affiliation:"ทีมโจรสลัดหนวดขาว", year:1997, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"แชงค์ส", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"แดง", height:199, age:39, affiliation:"ทีมโจรสลัดผมแดง", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ทราฟัลการ์ ดี วอเตอร์ ลอว์", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:191, age:26, affiliation:"ทีมโจรสลัดฮาร์ท", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โบอา แฮนค็อก", anime:"One Piece", gender:"หญิง", species:"มนุษย์", hair:"ดำ", height:191, age:31, affiliation:"โจรสลัดคุจะ", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ไวต์เบียร์ด (เอ็ดเวิร์ด นิวเกต)", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ขาว", height:666, age:72, affiliation:"ทีมโจรสลัดหนวดขาว", year:1997, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"มิฮอว์ค (ดราคูล มิฮอว์ค)", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:198, age:41, affiliation:"Cross Guild", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โครโคไดล์", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:253, age:46, affiliation:"Cross Guild", year:1997, role:"ร้าย", status:"มีชีวิต"},
+  {name:"ดอนกีโฆเต้ โดฟลามิงโก้", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:305, age:41, affiliation:"ราชวงศ์โดนีย์", year:1997, role:"ร้าย", status:"มีชีวิต"},
+  {name:"ไคโด", anime:"One Piece", gender:"ชาย", species:"โอนิ", hair:"ดำ", height:710, age:59, affiliation:"ทีมโจรสลัดร้อยสัตว์", year:1997, role:"ร้าย", status:"มีชีวิต"},
+  {name:"บิ๊กมัม (ชาร์ล็อต ลินลิน)", anime:"One Piece", gender:"หญิง", species:"มนุษย์", hair:"ชมพู", height:880, age:68, affiliation:"ทีมโจรสลัดบิ๊กมัม", year:1997, role:"ร้าย", status:"มีชีวิต"},
+  {name:"สโมเกอร์", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ขาว", height:209, age:36, affiliation:"กองทัพเรือ", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ทาชิกิ", anime:"One Piece", gender:"หญิง", species:"มนุษย์", hair:"เทา", height:170, age:21, affiliation:"กองทัพเรือ", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โคบี้", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ชมพู", height:167, age:17, affiliation:"กองทัพเรือ", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"บักกี้", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ฟ้า", height:192, age:39, affiliation:"Cross Guild", year:1997, role:"ร้าย", status:"มีชีวิต"},
+  {name:"เนเฟอร์ทารี วิวิ", anime:"One Piece", gender:"หญิง", species:"มนุษย์", hair:"ฟ้า", height:169, age:18, affiliation:"อาณาจักรอลาบาสต้า", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เพโรนา", anime:"One Piece", gender:"หญิง", species:"มนุษย์", hair:"ชมพู", height:160, age:23, affiliation:"อดีตไทเลอร์บาร์ค", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ซีซาร์ คลาวน์", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"เขียว", height:280, age:38, affiliation:"-", year:1997, role:"ร้าย", status:"มีชีวิต"},
+  {name:"ร็อบ ลุคชี่", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:212, age:30, affiliation:"CP0", year:1997, role:"ร้าย", status:"มีชีวิต"},
+  {name:"บาร์โตโลเมโอ", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"เขียว", height:220, age:24, affiliation:"Barto Club", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"แคร์รอต", anime:"One Piece", gender:"หญิง", species:"มิงค์ (กระต่าย)", hair:"ส้ม", height:168, age:18, affiliation:"Musketeers", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ยามาโตะ", anime:"One Piece", gender:"หญิง", species:"โอนิ", hair:"ขาว", height:263, age:28, affiliation:"ประเทศวาโนะ", year:1997, role:"สมทบ", status:"มีชีวิต"},
+  {name:"นารูโตะ อุซุมากิ", img:"https://cdn.myanimelist.net/images/characters/2/284121.jpg", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:166, age:17, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"เอก", status:"มีชีวิต"},
+  {name:"ซาสึเกะ อุชิฮะ", img:"https://cdn.myanimelist.net/images/characters/9/131317.jpg", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:168, age:17, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"เอก", status:"มีชีวิต"},
+  {name:"ซากุระ ฮารุโนะ", anime:"Naruto", gender:"หญิง", species:"มนุษย์", hair:"ชมพู", height:161, age:17, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"เอก", status:"มีชีวิต"},
+  {name:"คาคาชิ ฮาตาเกะ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"เทา/เงิน", height:181, age:27, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"อิตาชิ อุชิฮะ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:178, age:21, affiliation:"Akatsuki", year:1999, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"กาอาระ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"แดง", height:166, age:15, affiliation:"หมู่บ้านซุนะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ฮินาตะ ฮยูงะ", anime:"Naruto", gender:"หญิง", species:"มนุษย์", hair:"น้ำเงินเข้ม/ดำ", height:160, age:17, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ร็อค ลี", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:165, age:17, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ชิคามารุ นาระ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:170, age:17, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โบรุโตะ อุซุมากิ", anime:"Boruto", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:155, age:12, affiliation:"หมู่บ้านโคโนฮะ", year:2016, role:"เอก", status:"มีชีวิต"},
+  {name:"เพน (นางาโตะ)", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"ส้ม", height:176, age:35, affiliation:"Akatsuki", year:1999, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"โคนัน", anime:"Naruto", gender:"หญิง", species:"มนุษย์", hair:"น้ำเงิน", height:169, age:35, affiliation:"Akatsuki", year:1999, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"คิซาเมะ โฮชิงากิ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"น้ำเงิน", height:195, age:32, affiliation:"Akatsuki", year:1999, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"เดดาระ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:166, age:19, affiliation:"Akatsuki", year:1999, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"ซาโซริ", anime:"Naruto", gender:"ชาย", species:"มนุษย์ (หุ่นกล)", hair:"แดง", height:164, age:35, affiliation:"Akatsuki", year:1999, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"เนจิ ฮยูงะ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:172, age:17, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"เทมาริ", anime:"Naruto", gender:"หญิง", species:"มนุษย์", hair:"บลอนด์", height:165, age:17, affiliation:"หมู่บ้านซุนะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"คังคุโร", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:167, age:17, affiliation:"หมู่บ้านซุนะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ไมท์ กาย", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:184, age:30, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"คุเรไน ยูฮิ", anime:"Naruto", gender:"หญิง", species:"มนุษย์", hair:"ดำ", height:169, age:27, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ฮาชิรามะ เซนจู", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:185, age:50, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"โตบิรามะ เซนจู", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"ขาว", height:182, age:40, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"มาดาระ อุชิฮะ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:182, age:90, affiliation:"-", year:1999, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"โอบิโตะ อุชิฮะ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:177, age:14, affiliation:"Akatsuki", year:1999, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"มินาโตะ นามิกาเซะ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:179, age:24, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"จิไรยะ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"ขาว", height:191, age:54, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"สึนาเดะ", anime:"Naruto", gender:"หญิง", species:"มนุษย์", hair:"บลอนด์", height:163, age:54, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โอโรชิมารุ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:174, age:54, affiliation:"-", year:1999, role:"ร้าย", status:"มีชีวิต"},
+  {name:"อิโนะ ยามานากะ", anime:"Naruto", gender:"หญิง", species:"มนุษย์", hair:"บลอนด์", height:162, age:17, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โชจิ อาคิมิชิ", anime:"Naruto", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:172, age:17, affiliation:"หมู่บ้านโคโนฮะ", year:1999, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โกคู", img:"https://cdn.myanimelist.net/images/characters/14/228127.jpg", anime:"Dragon Ball", gender:"ชาย", species:"ไซย่า", hair:"ดำ", height:175, age:43, affiliation:"นักรบ Z", year:1984, role:"เอก", status:"มีชีวิต"},
+  {name:"เวจิต้า", anime:"Dragon Ball", gender:"ชาย", species:"ไซย่า", hair:"ดำ", height:164, age:46, affiliation:"นักรบ Z", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"บุลมา", anime:"Dragon Ball", gender:"หญิง", species:"มนุษย์", hair:"ฟ้า", height:165, age:44, affiliation:"นักรบ Z", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"พิคโกโร", anime:"Dragon Ball", gender:"ชาย", species:"นาเม็ค", hair:"ไม่มี", height:226, age:40, affiliation:"นักรบ Z", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โกฮัน", anime:"Dragon Ball", gender:"ชาย", species:"ไซย่าครึ่ง", hair:"ดำ", height:176, age:27, affiliation:"นักรบ Z", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ทรังค์", anime:"Dragon Ball", gender:"ชาย", species:"ไซย่าครึ่ง", hair:"ม่วง/บลอนด์", height:176, age:14, affiliation:"นักรบ Z", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ฟรีซเซอร์", anime:"Dragon Ball", gender:"ชาย", species:"เอเลี่ยน", hair:"ไม่มี", height:158, age:0, affiliation:"กองทัพฟรีซเซอร์", year:1984, role:"ร้าย", status:"มีชีวิต"},
+  {name:"คริลลิน", anime:"Dragon Ball", gender:"ชาย", species:"มนุษย์", hair:"ไม่มี", height:153, age:43, affiliation:"นักรบ Z", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"แอนดรอยด์ 18", anime:"Dragon Ball", gender:"หญิง", species:"ไซบอร์ก", hair:"บลอนด์", height:168, age:0, affiliation:"นักรบ Z", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ท่านอาจารย์โรชิ", anime:"Dragon Ball", gender:"ชาย", species:"มนุษย์", hair:"ขาว", height:167, age:344, affiliation:"นักรบ Z", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"บีรัส", anime:"Dragon Ball", gender:"ชาย", species:"เทพเจ้าแห่งการทำลาย", hair:"ไม่มี", height:170, age:0, affiliation:"จักรวาลที่ 7", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โกเท็งค์ส", anime:"Dragon Ball", gender:"ชาย", species:"ไซย่าครึ่ง (รวม)", hair:"ดำ/บลอนด์", height:152, age:8, affiliation:"นักรบ Z", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เซลล์", anime:"Dragon Ball", gender:"ชาย", species:"ชีวิตสังเคราะห์", hair:"ไม่มี", height:200, age:0, affiliation:"-", year:1984, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"มาจิน บู", anime:"Dragon Ball", gender:"ชาย", species:"ปีศาจมายา", hair:"ไม่มี", height:200, age:0, affiliation:"-", year:1984, role:"ร้าย", status:"มีชีวิต"},
+  {name:"วิส", anime:"Dragon Ball", gender:"ชาย", species:"เทวทูต", hair:"ฟ้า", height:200, age:0, affiliation:"จักรวาลที่ 7", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โบรลี่", anime:"Dragon Ball", gender:"ชาย", species:"ไซย่า", hair:"ดำ/เขียว", height:198, age:40, affiliation:"-", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ฮิต", anime:"Dragon Ball", gender:"ชาย", species:"เอเลี่ยน", hair:"ไม่มี", height:195, age:1000, affiliation:"จักรวาลที่ 6", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โกเต็น", anime:"Dragon Ball", gender:"ชาย", species:"ไซย่าครึ่ง", hair:"ดำ", height:153, age:13, affiliation:"นักรบ Z", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"แอนดรอยด์ 17", anime:"Dragon Ball", gender:"ชาย", species:"ไซบอร์ก", hair:"ดำ", height:175, age:0, affiliation:"นักรบ Z", year:1984, role:"สมทบ", status:"มีชีวิต"},
+  {name:"บาร์ดอค", anime:"Dragon Ball", gender:"ชาย", species:"ไซย่า", hair:"ดำ", height:176, age:40, affiliation:"กองทัพฟรีซเซอร์", year:1984, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"ทันจิโร่ คามาโดะ", img:"https://cdn.myanimelist.net/images/characters/5/461343.jpg", anime:"Demon Slayer", gender:"ชาย", species:"มนุษย์", hair:"ดำ/แดง", height:165, age:16, affiliation:"คณะปราบอสูร", year:2016, role:"เอก", status:"มีชีวิต"},
+  {name:"เนซึโกะ คามาโดะ", anime:"Demon Slayer", gender:"หญิง", species:"ปีศาจ", hair:"ดำ/ส้ม", height:153, age:14, affiliation:"คณะปราบอสูร", year:2016, role:"เอก", status:"มีชีวิต"},
+  {name:"เซนิตสึ อางาตสึมะ", anime:"Demon Slayer", gender:"ชาย", species:"มนุษย์", hair:"เหลือง", height:164, age:16, affiliation:"คณะปราบอสูร", year:2016, role:"เอก", status:"มีชีวิต"},
+  {name:"อิโนสุเกะ ฮาชิบิระ", anime:"Demon Slayer", gender:"ชาย", species:"มนุษย์", hair:"ดำ/ขาว(ลาย)", height:164, age:15, affiliation:"คณะปราบอสูร", year:2016, role:"เอก", status:"มีชีวิต"},
+  {name:"กิยุ โทมิโอกะ", anime:"Demon Slayer", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:176, age:21, affiliation:"คณะปราบอสูร", year:2016, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เคียวจูโร่ เรนโงกุ", anime:"Demon Slayer", gender:"ชาย", species:"มนุษย์", hair:"แดง/เหลือง", height:177, age:20, affiliation:"คณะปราบอสูร", year:2016, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"เท็งเง็น อุซุอิ", anime:"Demon Slayer", gender:"ชาย", species:"มนุษย์", hair:"ขาว", height:198, age:23, affiliation:"คณะปราบอสูร", year:2016, role:"สมทบ", status:"มีชีวิต"},
+  {name:"มิตสึริ คันโรจิ", anime:"Demon Slayer", gender:"หญิง", species:"มนุษย์", hair:"ชมพู/เขียว", height:167, age:19, affiliation:"คณะปราบอสูร", year:2016, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โอบาไน อิงุโระ", anime:"Demon Slayer", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:162, age:21, affiliation:"คณะปราบอสูร", year:2016, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"ซาเนมิ ชินาซุงาวะ", anime:"Demon Slayer", gender:"ชาย", species:"มนุษย์", hair:"ขาว", height:177, age:21, affiliation:"คณะปราบอสูร", year:2016, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เกียวเมอิ ฮิเมจิมะ", anime:"Demon Slayer", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:220, age:27, affiliation:"คณะปราบอสูร", year:2016, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"ชิโนบุ โคโชะ", anime:"Demon Slayer", gender:"หญิง", species:"มนุษย์", hair:"ม่วง/เขียว", height:151, age:18, affiliation:"คณะปราบอสูร", year:2016, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"คานาโอะ สึยุริ", anime:"Demon Slayer", gender:"หญิง", species:"มนุษย์", hair:"ดำ/น้ำตาล", height:156, age:16, affiliation:"คณะปราบอสูร", year:2016, role:"สมทบ", status:"มีชีวิต"},
+  {name:"มูซัน คิบุตสึจิ", anime:"Demon Slayer", gender:"ชาย", species:"ปีศาจ (ราชาปีศาจ)", hair:"ดำ", height:176, age:0, affiliation:"-", year:2016, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"อาคาซะ", anime:"Demon Slayer", gender:"ชาย", species:"ปีศาจ (จันทร์บน)", hair:"ฟ้า/ขาว", height:175, age:0, affiliation:"จันทร์บน 3", year:2016, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"โดมะ", anime:"Demon Slayer", gender:"ชาย", species:"ปีศาจ (จันทร์บน)", hair:"บลอนด์", height:187, age:0, affiliation:"จันทร์บน 2", year:2016, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"โคคุชิโบะ", anime:"Demon Slayer", gender:"ชาย", species:"ปีศาจ (จันทร์บน)", hair:"ดำ", height:190, age:0, affiliation:"จันทร์บน 1", year:2016, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"อิซุคุ มิโดริยะ", img:"https://cdn.myanimelist.net/images/characters/5/321441.jpg", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"เขียวเข้ม", height:166, age:15, affiliation:"U.A. High School", year:2014, role:"เอก", status:"มีชีวิต"},
+  {name:"คัตสึกิ บาคุโกะ", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"เถ้า/บลอนด์", height:172, age:15, affiliation:"U.A. High School", year:2014, role:"เอก", status:"มีชีวิต"},
+  {name:"โอชาโกะ อุราระกะ", anime:"My Hero Academia", gender:"หญิง", species:"มนุษย์", hair:"น้ำตาล", height:156, age:15, affiliation:"U.A. High School", year:2014, role:"เอก", status:"มีชีวิต"},
+  {name:"โชโตะ โทโดโรกิ", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"สองสี (ขาว/แดง)", height:176, age:16, affiliation:"U.A. High School", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เทนยะ อีดะ", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"น้ำเงิน", height:179, age:15, affiliation:"U.A. High School", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ออล ไมท์", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:220, age:48, affiliation:"U.A. High School", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โทมูระ ชิงาระกิ", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"ฟ้าอมเทา", height:175, age:20, affiliation:"Paranormal Liberation Front", year:2014, role:"ร้าย", status:"มีชีวิต"},
+  {name:"สึยุ อาซุอิ", anime:"My Hero Academia", gender:"หญิง", species:"มนุษย์", hair:"เขียว", height:155, age:15, affiliation:"U.A. High School", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เอจิโร่ คิริชิมะ", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"แดง (หนาม)", height:170, age:16, affiliation:"U.A. High School", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เอนเดเวอร์ (เอนจิ โทโดโรกิ)", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"แดง", height:195, age:46, affiliation:"สมาคมฮีโร่", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ฮอว์คส์", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:172, age:22, affiliation:"สมาคมฮีโร่", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"อีเรเซอร์เฮด (โชตะ ไอซาวะ)", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:183, age:30, affiliation:"U.A. High School", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เพรสเซนต์ ไมค์ (ฮิซาชิ ยามาดะ)", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:178, age:30, affiliation:"U.A. High School", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ทไวซ์ (จิน บูไบงาวาระ)", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:178, age:31, affiliation:"League of Villains", year:2014, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"โทงะ ฮิมิโกะ", anime:"My Hero Academia", gender:"หญิง", species:"มนุษย์", hair:"บลอนด์", height:157, age:17, affiliation:"League of Villains", year:2014, role:"ร้าย", status:"มีชีวิต"},
+  {name:"ดาบิ (โทยะ โทโดโรกิ)", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"ขาว", height:176, age:24, affiliation:"League of Villains", year:2014, role:"ร้าย", status:"มีชีวิต"},
+  {name:"มิริโอะ โทงาตะ (เลมิลเลียน)", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:181, age:18, affiliation:"U.A. High School", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เนจิเระ ฮาโดะ", anime:"My Hero Academia", gender:"หญิง", species:"มนุษย์", hair:"น้ำเงิน", height:164, age:17, affiliation:"U.A. High School", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ทามากิ อามาจิกิ (ซันอีทเตอร์)", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์", hair:"น้ำเงินเข้ม", height:177, age:17, affiliation:"U.A. High School", year:2014, role:"สมทบ", status:"มีชีวิต"},
+  {name:"สปินเนอร์ (ชูอิชิ อิงุชิ)", anime:"My Hero Academia", gender:"ชาย", species:"มนุษย์ (กิ้งก่า)", hair:"เขียว", height:178, age:21, affiliation:"League of Villains", year:2014, role:"ร้าย", status:"มีชีวิต"},
+  {name:"ไลท์ ยากามิ", img:"https://cdn.myanimelist.net/images/characters/2/92609.jpg", anime:"Death Note", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:179, age:17, affiliation:"Kira", year:2003, role:"เอก", status:"เสียชีวิต"},
+  {name:"แอล ลอว์ไลต์", anime:"Death Note", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:178, age:25, affiliation:"ตำรวจญี่ปุ่น/Interpol", year:2003, role:"เอก", status:"เสียชีวิต"},
+  {name:"มิซา อามาเนะ", anime:"Death Note", gender:"หญิง", species:"มนุษย์", hair:"บลอนด์", height:163, age:19, affiliation:"Kira", year:2003, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ไซตามะ", img:"https://cdn.myanimelist.net/images/characters/15/314228.jpg", anime:"One Punch Man", gender:"ชาย", species:"มนุษย์", hair:"ไม่มี", height:175, age:25, affiliation:"สมาคมฮีโร่", year:2012, role:"เอก", status:"มีชีวิต"},
+  {name:"เจนอส", anime:"One Punch Man", gender:"ชาย", species:"ไซบอร์ก", hair:"บลอนด์", height:189, age:19, affiliation:"สมาคมฮีโร่", year:2012, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โกโจ่ ซาโตรุ", img:"https://cdn.myanimelist.net/images/characters/15/511518.jpg", anime:"Jujutsu Kaisen", gender:"ชาย", species:"มนุษย์ (ผู้ใช้คาถา)", hair:"ขาว", height:190, age:28, affiliation:"โรงเรียนมัธยมจูจุตสึโตเกียว", year:2018, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"ยูจิ อิตาโดริ", anime:"Jujutsu Kaisen", gender:"ชาย", species:"มนุษย์ (ผู้ใช้คาถา)", hair:"ชมพู", height:173, age:15, affiliation:"โรงเรียนมัธยมจูจุตสึโตเกียว", year:2018, role:"เอก", status:"มีชีวิต"},
+  {name:"เมกุมิ ฟุชิงุโร", anime:"Jujutsu Kaisen", gender:"ชาย", species:"มนุษย์ (ผู้ใช้คาถา)", hair:"ดำ", height:175, age:15, affiliation:"โรงเรียนมัธยมจูจุตสึโตเกียว", year:2018, role:"เอก", status:"มีชีวิต"},
+  {name:"โนบาระ คุกิซากิ", anime:"Jujutsu Kaisen", gender:"หญิง", species:"มนุษย์ (ผู้ใช้คาถา)", hair:"ส้ม", height:163, age:16, affiliation:"โรงเรียนมัธยมจูจุตสึโตเกียว", year:2018, role:"เอก", status:"ไม่แน่ชัด"},
+  {name:"นานามิ เคนโตะ", anime:"Jujutsu Kaisen", gender:"ชาย", species:"มนุษย์ (ผู้ใช้คาถา)", hair:"บลอนด์", height:184, age:28, affiliation:"โรงเรียนมัธยมจูจุตสึโตเกียว", year:2018, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"โทเงะ อินุมากิ", anime:"Jujutsu Kaisen", gender:"ชาย", species:"มนุษย์ (ผู้ใช้คาถา)", hair:"ขาว", height:164, age:16, affiliation:"โรงเรียนมัธยมจูจุตสึโตเกียว", year:2018, role:"สมทบ", status:"มีชีวิต"},
+  {name:"แพนด้า", anime:"Jujutsu Kaisen", gender:"ชาย", species:"หุ่นคาถา", hair:"ดำ/ขาว", height:200, age:0, affiliation:"โรงเรียนมัธยมจูจุตสึโตเกียว", year:2018, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ยูตะ โอคโคตสึ", anime:"Jujutsu Kaisen", gender:"ชาย", species:"มนุษย์ (ผู้ใช้คาถา)", hair:"ดำ", height:181, age:16, affiliation:"โรงเรียนมัธยมจูจุตสึโตเกียว", year:2018, role:"สมทบ", status:"มีชีวิต"},
+  {name:"อาโออิ โทโดะ", anime:"Jujutsu Kaisen", gender:"ชาย", species:"มนุษย์ (ผู้ใช้คาถา)", hair:"ดำ", height:190, age:18, affiliation:"โรงเรียนมัธยมจูจุตสึโตเกียว", year:2018, role:"สมทบ", status:"มีชีวิต"},
+  {name:"มาฮิโตะ", anime:"Jujutsu Kaisen", gender:"ชาย", species:"คำสาป", hair:"เทา/ขาว", height:175, age:0, affiliation:"-", year:2018, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"มากิ เซนิน", anime:"Jujutsu Kaisen", gender:"หญิง", species:"มนุษย์ (ไร้พลังคาถา)", hair:"ดำ", height:170, age:16, affiliation:"โรงเรียนมัธยมจูจุตสึโตเกียว", year:2018, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ซุงุรุ เกโตะ", anime:"Jujutsu Kaisen", gender:"ชาย", species:"มนุษย์ (ผู้ใช้คาถา)", hair:"ดำ", height:189, age:28, affiliation:"-", year:2018, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"เรียวเมน ซุคุนะ", anime:"Jujutsu Kaisen", gender:"ชาย", species:"คำสาป (ราชาแห่งคำสาป)", hair:"ดำ", height:173, age:0, affiliation:"-", year:2018, role:"ร้าย", status:"มีชีวิต"},
+  {name:"โชโซะ", anime:"Jujutsu Kaisen", gender:"ชาย", species:"ลูกครึ่งคำสาป", hair:"ดำ/ขาว", height:180, age:150, affiliation:"-", year:2018, role:"สมทบ", status:"มีชีวิต"},
+  {name:"อิชิโงะ คุโรซากิ", img:"https://cdn.myanimelist.net/images/characters/6/77165.jpg", anime:"Bleach", gender:"ชาย", species:"มนุษย์ (ครึ่งโซลรีปเปอร์)", hair:"ส้ม", height:181, age:17, affiliation:"Soul Society", year:2001, role:"เอก", status:"มีชีวิต"},
+  {name:"รุเกีย คุชิกิ", anime:"Bleach", gender:"หญิง", species:"โซลรีปเปอร์", hair:"ดำ", height:144, age:150, affiliation:"Soul Society", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เรนจิ อาบาไร", anime:"Bleach", gender:"ชาย", species:"โซลรีปเปอร์", hair:"แดง", height:188, age:160, affiliation:"Soul Society", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โทชิโร่ ฮิตสึงายะ", anime:"Bleach", gender:"ชาย", species:"โซลรีปเปอร์", hair:"ขาว", height:133, age:10, affiliation:"Soul Society", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เบียคุยะ คุชิกิ", anime:"Bleach", gender:"ชาย", species:"โซลรีปเปอร์", hair:"ดำ", height:175, age:0, affiliation:"Soul Society", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เคนปาชิ ซาราคิ", anime:"Bleach", gender:"ชาย", species:"โซลรีปเปอร์", hair:"ดำ (หนาม)", height:202, age:0, affiliation:"Soul Society", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โยรุอิชิ ชิโฮอิน", anime:"Bleach", gender:"หญิง", species:"โซลรีปเปอร์", hair:"ม่วง", height:156, age:0, affiliation:"Soul Society", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"คิสุเกะ อุระฮาระ", anime:"Bleach", gender:"ชาย", species:"โซลรีปเปอร์", hair:"บลอนด์", height:183, age:0, affiliation:"Soul Society (อดีต)", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โซสุเกะ ไอเซน", anime:"Bleach", gender:"ชาย", species:"โซลรีปเปอร์", hair:"น้ำตาล", height:186, age:0, affiliation:"-", year:2001, role:"ร้าย", status:"มีชีวิต"},
+  {name:"กิน อิชิมารุ", anime:"Bleach", gender:"ชาย", species:"โซลรีปเปอร์", hair:"เทา", height:187, age:0, affiliation:"-", year:2001, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"โอริฮิเมะ อิโนอุเอะ", anime:"Bleach", gender:"หญิง", species:"มนุษย์", hair:"ส้ม", height:157, age:16, affiliation:"กลุ่มอิชิโงะ", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"อุรยู อิชิดะ", anime:"Bleach", gender:"ชาย", species:"ควินซี่", hair:"ดำ", height:177, age:15, affiliation:"กลุ่มอิชิโงะ", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"กริมโจว์ แยกเกอร์แจ็คซ์", anime:"Bleach", gender:"ชาย", species:"อาร์รันการ์", hair:"ฟ้า", height:186, age:0, affiliation:"Hueco Mundo", year:2001, role:"ร้าย", status:"มีชีวิต"},
+  {name:"อุลควิออร์รา ซิเฟอร์", anime:"Bleach", gender:"ชาย", species:"อาร์รันการ์", hair:"ดำ", height:169, age:0, affiliation:"Hueco Mundo", year:2001, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"รังกิคุ มัตสึโมโตะ", anime:"Bleach", gender:"หญิง", species:"โซลรีปเปอร์", hair:"บลอนด์", height:172, age:0, affiliation:"Soul Society", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"อิซุรุ คิระ", anime:"Bleach", gender:"ชาย", species:"โซลรีปเปอร์", hair:"บลอนด์", height:180, age:0, affiliation:"Soul Society", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"มายุริ คุโรสึชิ", anime:"Bleach", gender:"ชาย", species:"โซลรีปเปอร์", hair:"ดำ/ขาว", height:175, age:0, affiliation:"Soul Society", year:2001, role:"สมทบ", status:"มีชีวิต"},
+  {name:"คิลลัว โซลดิค", img:"https://cdn.myanimelist.net/images/characters/12/203180.jpg", anime:"Hunter x Hunter", gender:"ชาย", species:"มนุษย์ (นักฆ่า)", hair:"เงิน", height:158, age:14, affiliation:"ตระกูล Zoldyck", year:1998, role:"เอก", status:"มีชีวิต"},
+  {name:"กอน ฟรีคส์", anime:"Hunter x Hunter", gender:"ชาย", species:"มนุษย์", hair:"เขียว/ดำ", height:154, age:12, affiliation:"นักล่า (Hunter)", year:1998, role:"เอก", status:"มีชีวิต"},
+  {name:"คุราปิก้า", anime:"Hunter x Hunter", gender:"ชาย", species:"มนุษย์ (Kurta)", hair:"บลอนด์", height:163, age:17, affiliation:"นักล่า (Hunter)", year:1998, role:"เอก", status:"มีชีวิต"},
+  {name:"ลีโอริโอ ปาราดีไนต์", anime:"Hunter x Hunter", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:178, age:19, affiliation:"นักล่า (Hunter)", year:1998, role:"เอก", status:"มีชีวิต"},
+  {name:"กิง ฟรีคส์", anime:"Hunter x Hunter", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:178, age:45, affiliation:"นักล่า (Hunter)", year:1998, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ฮิโซกะ โมโรว์", anime:"Hunter x Hunter", gender:"ชาย", species:"มนุษย์", hair:"แดง", height:187, age:28, affiliation:"Phantom Troupe", year:1998, role:"ร้าย", status:"มีชีวิต"},
+  {name:"โครลโล ลูซิลเฟอร์", anime:"Hunter x Hunter", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:180, age:26, affiliation:"Phantom Troupe", year:1998, role:"ร้าย", status:"มีชีวิต"},
+  {name:"เนเฟอร์ปิตู", anime:"Hunter x Hunter", gender:"ไม่ระบุ", species:"แมลงไคเมร่า", hair:"บลอนด์", height:170, age:0, affiliation:"Royal Guard", year:1998, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"เมอรูเอม", anime:"Hunter x Hunter", gender:"ชาย", species:"แมลงไคเมร่า", hair:"ไม่มี", height:170, age:0, affiliation:"-", year:1998, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"อิลลูมิ โซลดิค", anime:"Hunter x Hunter", gender:"ชาย", species:"มนุษย์ (นักฆ่า)", hair:"ดำ", height:185, age:24, affiliation:"ตระกูล Zoldyck", year:1998, role:"ร้าย", status:"มีชีวิต"},
+  {name:"บิสกี้ (บิสกิต ครูเกอร์)", anime:"Hunter x Hunter", gender:"หญิง", species:"มนุษย์", hair:"บลอนด์", height:152, age:57, affiliation:"นักล่า (Hunter)", year:1998, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ไฟแทน พอร์เตอร์", anime:"Hunter x Hunter", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:155, age:0, affiliation:"Phantom Troupe", year:1998, role:"ร้าย", status:"มีชีวิต"},
+  {name:"นัคเคิล ไบน์", anime:"Hunter x Hunter", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:183, age:19, affiliation:"นักล่า (Hunter)", year:1998, role:"สมทบ", status:"มีชีวิต"},
+  {name:"อาสตะ", anime:"Black Clover", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:166, age:15, affiliation:"กลุ่มอัศวินเวท Black Bull", year:2015, role:"เอก", status:"มีชีวิต"},
+  {name:"ยูโนะ กรินเบอรีออล", anime:"Black Clover", gender:"ชาย", species:"มนุษย์", hair:"เหลือง/เขียว", height:168, age:15, affiliation:"กลุ่มอัศวินเวท Golden Dawn", year:2015, role:"เอก", status:"มีชีวิต"},
+  {name:"โนเอล ซิลวา", anime:"Black Clover", gender:"หญิง", species:"มนุษย์", hair:"ขาว", height:160, age:15, affiliation:"กลุ่มอัศวินเวท Black Bull", year:2015, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ยามิ ซุเกะฮิโร่", anime:"Black Clover", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:183, age:28, affiliation:"กลุ่มอัศวินเวท Black Bull", year:2015, role:"สมทบ", status:"มีชีวิต"},
+  {name:"จูเลียส โนวาโครโน่", anime:"Black Clover", gender:"ชาย", species:"มนุษย์", hair:"ขาว", height:183, age:41, affiliation:"Clover Kingdom", year:2015, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ลัค โวลเทีย", anime:"Black Clover", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:165, age:17, affiliation:"กลุ่มอัศวินเวท Black Bull", year:2015, role:"สมทบ", status:"มีชีวิต"},
+  {name:"วาเนสซา เอโนเตก้า", anime:"Black Clover", gender:"หญิง", species:"มนุษย์ (แม่มด)", hair:"ชมพู", height:170, age:24, affiliation:"กลุ่มอัศวินเวท Black Bull", year:2015, role:"สมทบ", status:"มีชีวิต"},
+  {name:"แมกน่า สวิง", anime:"Black Clover", gender:"ชาย", species:"มนุษย์", hair:"แดง", height:181, age:21, affiliation:"กลุ่มอัศวินเวท Black Bull", year:2015, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เดนจิ", anime:"Chainsaw Man", gender:"ชาย", species:"มนุษย์ (ปีศาจครึ่ง)", hair:"ดำ/ส้ม", height:173, age:16, affiliation:"หน่วยปราบปีศาจโตเกียว", year:2018, role:"เอก", status:"มีชีวิต"},
+  {name:"พาวเวอร์", anime:"Chainsaw Man", gender:"หญิง", species:"ปีศาจ (เลือด)", hair:"ชมพู/แดง", height:163, age:0, affiliation:"หน่วยปราบปีศาจโตเกียว", year:2018, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"อากิ ฮายาคาวะ", anime:"Chainsaw Man", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:178, age:18, affiliation:"หน่วยปราบปีศาจโตเกียว", year:2018, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"มาคิมะ", anime:"Chainsaw Man", gender:"หญิง", species:"ปีศาจ (การควบคุม)", hair:"น้ำตาล", height:168, age:0, affiliation:"หน่วยปราบปีศาจ", year:2018, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"ฮิเมโนะ", anime:"Chainsaw Man", gender:"หญิง", species:"มนุษย์", hair:"ดำ", height:165, age:22, affiliation:"หน่วยปราบปีศาจโตเกียว", year:2018, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"โคเบนิ ฮิงาชิยามะ", anime:"Chainsaw Man", gender:"หญิง", species:"มนุษย์", hair:"น้ำตาล", height:158, age:20, affiliation:"หน่วยปราบปีศาจโตเกียว", year:2018, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เซ็นคุ อิชิงามิ", img:"https://cdn.myanimelist.net/images/characters/5/436516.jpg", anime:"Dr. Stone", gender:"ชาย", species:"มนุษย์", hair:"เขียว", height:165, age:16, affiliation:"อาณาจักรแห่งวิทยาศาสตร์", year:2017, role:"เอก", status:"มีชีวิต"},
+  {name:"ไทจู โอกิ", anime:"Dr. Stone", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:182, age:16, affiliation:"อาณาจักรแห่งวิทยาศาสตร์", year:2017, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โครม", anime:"Dr. Stone", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:168, age:15, affiliation:"อาณาจักรแห่งวิทยาศาสตร์", year:2017, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โคฮาคุ", anime:"Dr. Stone", gender:"หญิง", species:"มนุษย์", hair:"บลอนด์", height:160, age:15, affiliation:"อาณาจักรแห่งวิทยาศาสตร์", year:2017, role:"สมทบ", status:"มีชีวิต"},
+  {name:"สึคาซะ ชิชิโอ", anime:"Dr. Stone", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:193, age:18, affiliation:"จักรวรรดิซึคาซะ", year:2017, role:"ร้าย", status:"มีชีวิต"},
+  {name:"อัญยะ ฟอร์เจอร์", img:"https://cdn.myanimelist.net/images/characters/4/480841.jpg", anime:"Spy x Family", gender:"หญิง", species:"มนุษย์", hair:"ชมพู", height:110, age:6, affiliation:"ตระกูล Forger", year:2019, role:"เอก", status:"มีชีวิต"},
+  {name:"ลอยด์ ฟอร์เจอร์", anime:"Spy x Family", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:187, age:35, affiliation:"WISE", year:2019, role:"เอก", status:"มีชีวิต"},
+  {name:"ยอร์ ฟอร์เจอร์", anime:"Spy x Family", gender:"หญิง", species:"มนุษย์", hair:"ดำ", height:170, age:27, affiliation:"องค์กรนักฆ่า", year:2019, role:"เอก", status:"มีชีวิต"},
+  {name:"ดามิอัน เดสมอนด์", anime:"Spy x Family", gender:"ชาย", species:"มนุษย์", hair:"เขียว", height:120, age:6, affiliation:"Eden Academy", year:2019, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โชโย ฮินาตะ", img:"https://cdn.myanimelist.net/images/characters/4/273900.jpg", anime:"Haikyuu!!", gender:"ชาย", species:"มนุษย์", hair:"ส้ม", height:164, age:15, affiliation:"โรงเรียนคารัสโนะ", year:2012, role:"เอก", status:"มีชีวิต"},
+  {name:"โทบิโอะ คาเงยามะ", anime:"Haikyuu!!", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:180, age:15, affiliation:"โรงเรียนคารัสโนะ", year:2012, role:"เอก", status:"มีชีวิต"},
+  {name:"เคอิ สึคิชิมะ", anime:"Haikyuu!!", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:188, age:16, affiliation:"โรงเรียนคารัสโนะ", year:2012, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ยู นิชิโนยะ", anime:"Haikyuu!!", gender:"ชาย", species:"มนุษย์", hair:"ดำ/บลอนด์", height:159, age:16, affiliation:"โรงเรียนคารัสโนะ", year:2012, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ไดจิ ซาวามุระ", anime:"Haikyuu!!", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาลเข้ม", height:176, age:17, affiliation:"โรงเรียนคารัสโนะ", year:2012, role:"สมทบ", status:"มีชีวิต"},
+  {name:"วาคาโตชิ อุชิจิมะ", anime:"Haikyuu!!", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:194, age:17, affiliation:"โรงเรียนชิราโตริซาวะ", year:2012, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ยูสุเกะ อุราเมชิ", img:"https://i.imgur.com/dBzrN4v.gif", anime:"Yu Yu Hakusho", gender:"ชาย", species:"มนุษย์ (ครึ่งปีศาจ)", hair:"ดำ", height:175, age:14, affiliation:"นักสืบวิญญาณ", year:1990, role:"เอก", status:"มีชีวิต"},
+  {name:"คาซุมะ คุวาบาระ", anime:"Yu Yu Hakusho", gender:"ชาย", species:"มนุษย์", hair:"ส้ม", height:175, age:14, affiliation:"นักสืบวิญญาณ", year:1990, role:"เอก", status:"มีชีวิต"},
+  {name:"ฮิเอย์", anime:"Yu Yu Hakusho", gender:"ชาย", species:"ปีศาจ (ครึ่ง Koorime)", hair:"ดำ (หนาม)", height:152, age:0, affiliation:"นักสืบวิญญาณ", year:1990, role:"สมทบ", status:"มีชีวิต"},
+  {name:"คุรามะ (โยโกะ คุรามะ)", anime:"Yu Yu Hakusho", gender:"ชาย", species:"มนุษย์ (วิญญาณจิ้งจอก)", hair:"แดง", height:171, age:0, affiliation:"นักสืบวิญญาณ", year:1990, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โทงุโระรุ่นน้อง", anime:"Yu Yu Hakusho", gender:"ชาย", species:"มนุษย์ (อดีต)", hair:"ไม่มี", height:200, age:0, affiliation:"-", year:1990, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"เก็งไก", anime:"Yu Yu Hakusho", gender:"หญิง", species:"มนุษย์", hair:"ชมพู/ขาว", height:148, age:70, affiliation:"นักสืบวิญญาณ", year:1990, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"โทงุโระรุ่นพี่", anime:"Yu Yu Hakusho", gender:"ชาย", species:"มนุษย์ (อดีต)", hair:"ไม่มี", height:170, age:0, affiliation:"-", year:1990, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"ฮานามิชิ ซากุรากิ", img:"https://cdn.myanimelist.net/images/characters/7/63126.jpg", anime:"Slam Dunk", gender:"ชาย", species:"มนุษย์", hair:"แดง", height:189, age:16, affiliation:"โรงเรียนโชโฮคุ", year:1990, role:"เอก", status:"มีชีวิต"},
+  {name:"คาเอเดะ รุกาวะ", anime:"Slam Dunk", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:187, age:16, affiliation:"โรงเรียนโชโฮคุ", year:1990, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ทาเกะโนริ อาคางิ", anime:"Slam Dunk", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:197, age:17, affiliation:"โรงเรียนโชโฮคุ", year:1990, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ฮิซาชิ มิตสึอิ", anime:"Slam Dunk", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:184, age:17, affiliation:"โรงเรียนโชโฮคุ", year:1990, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ทาเคมิชิ ฮานางากิ", anime:"Tokyo Revengers", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:168, age:26, affiliation:"แก๊งโตมัน", year:2017, role:"เอก", status:"มีชีวิต"},
+  {name:"มันจิโร่ ซาโนะ (ไมคี้)", anime:"Tokyo Revengers", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์/ดำ", height:165, age:15, affiliation:"แก๊งโตมัน", year:2017, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ดราเคน (เคน ริวงูจิ)", anime:"Tokyo Revengers", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:185, age:15, affiliation:"แก๊งโตมัน", year:2017, role:"สมทบ", status:"เสียชีวิต"},
+  {name:"ชิฟุยุ มัตสึโนะ", anime:"Tokyo Revengers", gender:"ชาย", species:"มนุษย์", hair:"ดำ/ขาว", height:169, age:14, affiliation:"แก๊งโตมัน", year:2017, role:"สมทบ", status:"มีชีวิต"},
+  {name:"คิซากิ เทตตะ", anime:"Tokyo Revengers", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:162, age:14, affiliation:"แก๊งโตมัน", year:2017, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"ชิเงโอะ คาเงยามะ (ม็อบ)", anime:"Mob Psycho 100", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:150, age:14, affiliation:"สำนักงานจิตวิญญาณ", year:2012, role:"เอก", status:"มีชีวิต"},
+  {name:"ไรเก็น อาราตากะ", anime:"Mob Psycho 100", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:178, age:28, affiliation:"สำนักงานจิตวิญญาณ", year:2012, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เทรุกิ ฮานาซาวะ (เทรุ)", anime:"Mob Psycho 100", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:169, age:14, affiliation:"โรงเรียนมัธยมคิคุ", year:2012, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เท็ตสึโร่ คุโรโกะ", anime:"Kuroko no Basket", gender:"ชาย", species:"มนุษย์", hair:"ฟ้าอ่อน", height:168, age:15, affiliation:"โรงเรียนเซริน", year:2008, role:"เอก", status:"มีชีวิต"},
+  {name:"ไทกะ คางามิ", anime:"Kuroko no Basket", gender:"ชาย", species:"มนุษย์", hair:"แดง", height:190, age:15, affiliation:"โรงเรียนเซริน", year:2008, role:"เอก", status:"มีชีวิต"},
+  {name:"ริโยตะ คิเซะ", anime:"Kuroko no Basket", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:189, age:16, affiliation:"โรงเรียนคาโจ", year:2008, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ชินทาโร่ มิโดริมะ", anime:"Kuroko no Basket", gender:"ชาย", species:"มนุษย์", hair:"เขียว", height:195, age:16, affiliation:"โรงเรียนชูโต่ว", year:2008, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ไดกิ อาโอมิเนะ", anime:"Kuroko no Basket", gender:"ชาย", species:"มนุษย์", hair:"น้ำเงินเข้ม", height:192, age:16, affiliation:"โรงเรียนโตะโอ", year:2008, role:"สมทบ", status:"มีชีวิต"},
+  {name:"กินโตกิ ซาคาตะ", img:"https://cdn.myanimelist.net/images/characters/6/199651.jpg", anime:"Gintama", gender:"ชาย", species:"มนุษย์", hair:"เงิน", height:175, age:28, affiliation:"Yorozuya", year:2003, role:"เอก", status:"มีชีวิต"},
+  {name:"โทชิโร่ ฮิจิคาตะ", anime:"Gintama", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:177, age:27, affiliation:"Shinsengumi", year:2003, role:"สมทบ", status:"มีชีวิต"},
+  {name:"โซโงะ โอคิตะ", anime:"Gintama", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:170, age:18, affiliation:"Shinsengumi", year:2003, role:"สมทบ", status:"มีชีวิต"},
+  {name:"คางุระ", anime:"Gintama", gender:"หญิง", species:"Yato", hair:"ส้ม", height:155, age:14, affiliation:"Yorozuya", year:2003, role:"เอก", status:"มีชีวิต"},
+  {name:"โคทาโร่ คัตสึระ", anime:"Gintama", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:176, age:25, affiliation:"กองกำลังต่อต้านโจอุย", year:2003, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ชินสุเกะ ทาคาสุกิ", anime:"Gintama", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:170, age:28, affiliation:"Kiheitai", year:2003, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"โจทาโร่ คูโจ", anime:"JoJo's Bizarre Adventure", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:195, age:17, affiliation:"กลุ่ม Crusaders", year:1986, role:"เอก", status:"เสียชีวิต"},
+  {name:"โจเซฟ โจสตาร์", anime:"JoJo's Bizarre Adventure", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:195, age:18, affiliation:"ตระกูล Joestar", year:1986, role:"เอก", status:"เสียชีวิต"},
+  {name:"จิออร์โน่ โจวานนา", anime:"JoJo's Bizarre Adventure", gender:"ชาย", species:"มนุษย์ (ลูกดิโอ)", hair:"บลอนด์", height:172, age:15, affiliation:"Passione", year:1986, role:"เอก", status:"มีชีวิต"},
+  {name:"โจสุเกะ ฮิงาชิคาตะ", anime:"JoJo's Bizarre Adventure", gender:"ชาย", species:"มนุษย์", hair:"ดำ (ทรงพอมพาดัวร์)", height:180, age:16, affiliation:"-", year:1986, role:"เอก", status:"มีชีวิต"},
+  {name:"ดิโอ แบรนโด", anime:"JoJo's Bizarre Adventure", gender:"ชาย", species:"แวมไพร์", hair:"บลอนด์", height:195, age:0, affiliation:"-", year:1986, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"โยชิคาเงะ คิระ", anime:"JoJo's Bizarre Adventure", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:179, age:33, affiliation:"-", year:1986, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"ยูกิ มูโตะ", anime:"Yu-Gi-Oh!", gender:"ชาย", species:"มนุษย์", hair:"หลายสี (ดำ/ม่วง/บลอนด์)", height:153, age:16, affiliation:"โดมิโนไฮสคูล", year:1996, role:"เอก", status:"มีชีวิต"},
+  {name:"เซโตะ ไคบะ", anime:"Yu-Gi-Oh!", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:186, age:17, affiliation:"บริษัท KaibaCorp", year:1996, role:"สมทบ", status:"มีชีวิต"},
+  {name:"เคนชิน ฮิมุระ", img:"https://cdn.myanimelist.net/images/characters/9/313905.jpg", anime:"Rurouni Kenshin", gender:"ชาย", species:"มนุษย์", hair:"แดง", height:158, age:28, affiliation:"นักดาบเร่ร่อน", year:1994, role:"เอก", status:"มีชีวิต"},
+  {name:"ฮาจิเมะ ไซโต้", anime:"Rurouni Kenshin", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:181, age:30, affiliation:"Meiji Government", year:1994, role:"สมทบ", status:"มีชีวิต"},
+  {name:"มาโกโตะ ชิชิโอ", anime:"Rurouni Kenshin", gender:"ชาย", species:"มนุษย์", hair:"ดำ (พันผ้า)", height:173, age:30, affiliation:"Juppongatana", year:1994, role:"ร้าย", status:"เสียชีวิต"},
+  {name:"ฮิรุมะ โยอิจิ", anime:"Eyeshield 21", gender:"ชาย", species:"มนุษย์", hair:"บลอนด์", height:172, age:17, affiliation:"โรงเรียนเดมอน", year:2002, role:"เอก", status:"มีชีวิต"},
+  {name:"เซนะ โคบายาคาวะ", anime:"Eyeshield 21", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:168, age:16, affiliation:"โรงเรียนเดมอน", year:2002, role:"เอก", status:"มีชีวิต"},
+  {name:"คุริตะ เรียวคัน", anime:"Eyeshield 21", gender:"ชาย", species:"มนุษย์", hair:"น้ำตาล", height:185, age:16, affiliation:"โรงเรียนเดมอน", year:2002, role:"สมทบ", status:"มีชีวิต"},
+  {name:"ได (ไดยะ)", anime:"Dragon Quest: Dai no Daibouken", gender:"ชาย", species:"มนุษย์ครึ่งปีศาจ", hair:"เขียว", height:150, age:13, affiliation:"กลุ่มผู้กล้า", year:1989, role:"เอก", status:"มีชีวิต"}
+];
+
+
+// ── Helpers ──
+const DIFF = {easy:12,normal:8,hard:5};
+const TITLES = ['นักทายอนิเมะมือใหม่','นักทายอนิเมะพื้นฐาน','นักทายอนิเมะระดับกลาง','นักทายอนิเมะขั้นสูง','นักทายอนิเมะผู้เชี่ยวชาญ','นักทายอนิเมะระดับเทพ'];
+
+function hashColor(str){
+  let h=0; for(let c of str) h=c.charCodeAt(0)+((h<<5)-h);
+  return `hsl(${Math.abs(h)%360},55%,48%)`;
+}
+function initials(name){
+  return name.split(/\s+/).map(w=>w[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
+}
+function avatarSvg(name,size=48){
+  const bg = hashColor(name);
+  const ini = initials(name);
+  return `<div style="width:${size}px;height:${size}px;border-radius:${size>50?18:10}px;background:${bg};display:flex;align-items:center;justify-content:center;font-size:${size>50?size*0.3:size*0.32}px;font-weight:800;color:#fff;">${ini}</div>`;
+}
+function avatarBg(name){ return hashColor(name); }
+
+// ── STATE ──
+let target=null, guesses=0, maxGuesses=8, gameOver=false, currentUser=null, lastWin=false;
+
+// ── STORAGE ──
+// ── STORAGE (localStorage fallback + Firebase sync) ──
+function getProfiles(){ try{ return JSON.parse(localStorage.getItem('amd_profiles')||'{}'); }catch(e){ return {}; } }
+function saveProfiles(p){ localStorage.setItem('amd_profiles',JSON.stringify(p)); }
+function getProfile(name){
+  const p=getProfiles();
+  if(!p[name]) p[name]={wins:0,streak:0,bestStreak:0,score:0,games:0,coins:0,recent:[]};
+  return p[name];
+}
+function saveProfile(name, data){
+  // always save to localStorage first (instant UI)
+  const p=getProfiles(); p[name]=data; saveProfiles(p);
+  // then sync to Firestore in background
+  if(window._fb?.ready){
+    window._fb.saveProfile(data).catch(()=>{});
+  }
+}
+
+// ── LOGIN ──
+function doLogin(){
+  const name = document.getElementById('loginName').value.trim();
+  if(!name){ alert('กรุณาใส่ชื่อก่อนครับ'); return; }
+  currentUser = name;
+  localStorage.setItem('amd_user', name);
+  document.getElementById('loginOverlay').style.display='none';
+
+  // init Firebase auth in background, then sync profile
+  if(window._fb){
+    window._fb.init(name).then(async ()=>{
+      const fbProfile = await window._fb.loadProfile();
+      if(fbProfile){
+        // merge: take higher score between local and cloud
+        const local = getProfile(name);
+        const merged = {
+          ...fbProfile,
+          score:      Math.max(local.score||0,      fbProfile.score||0),
+          wins:       Math.max(local.wins||0,       fbProfile.wins||0),
+          games:      Math.max(local.games||0,      fbProfile.games||0),
+          bestStreak: Math.max(local.bestStreak||0, fbProfile.bestStreak||0),
+          streak:     fbProfile.streak||local.streak||0,
+          coins:      Math.max(local.coins||0,      fbProfile.coins||0),
+          recent:     fbProfile.recent||local.recent||[],
+          displayName: name,
+        };
+        saveProfile(name, merged);
+      }
+      renderProfileUI();
+      renderLeaderboard();
+    }).catch(()=>{});
+  }
+
+  initUI();
+  resetGame(false);
+}
+
+function doLogout(){
+  localStorage.removeItem('amd_user');
+  location.reload();
+}
+function copyLink(){
+  navigator.clipboard.writeText(location.href).then(()=>alert('คัดลอกลิงก์แล้วครับ!')).catch(()=>alert('ลิงก์: '+location.href));
+}
+
+function checkLevelUp(oldScore, newScore){
+  const oldLv = Math.floor(oldScore/200)+1;
+  const newLv = Math.floor(newScore/200)+1;
+  if(newLv > oldLv){
+    const lvUpCount = newLv - oldLv;
+    showLvUpToast(newLv, lvUpCount);
+  }
+}
+
+function showLvUpToast(lv, count){
+  const t = document.createElement('div');
+  t.className = 'levelup-toast';
+  t.innerHTML = `🎉 เลเวลอัพ! Lv.${lv}`;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 4000);
+}
+
+function initUI(){
+  // today date
+  const d=new Date();
+  document.getElementById('todayDate') && (document.getElementById('todayDate').textContent=`${d.getDate()} ${['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'][d.getMonth()]} ${d.getFullYear()+543}`);
+  initCharOfDay();
+  renderProfileUI();
+  renderLeaderboard();
+  setTimeout(checkMgDailyState, 100);
+}
+
+function renderProfileUI(){
+  const p = getProfile(currentUser);
+  // nav
+  document.getElementById('navName').textContent = currentUser;
+  const navAv = document.getElementById('navAvatar');
+  navAv.textContent = initials(currentUser);
+  navAv.style.background = avatarBg(currentUser);
+  // sidebar avatar
+  const av = document.getElementById('profileAvatar');
+  av.textContent = initials(currentUser);
+  av.style.background = avatarBg(currentUser);
+  document.getElementById('profileName').textContent = currentUser;
+  // level
+  const lv = Math.floor(p.score/200)+1;
+  document.getElementById('profileLv').textContent = `Lv. ${lv}`;
+  const expNeeded = lv*200;
+  const expCur = p.score % 200;
+  document.getElementById('expFill').style.width = (expCur/200*100)+'%';
+  document.getElementById('expText').textContent = `EXP ${p.score} / ${expNeeded}`;
+  // stats
+  document.getElementById('statStreak').textContent = p.streak;
+  document.getElementById('statScore').textContent = p.score.toLocaleString();
+  document.getElementById('statGames').textContent = p.games;
+  document.getElementById('statWins').textContent = p.wins;
+  // recent
+  renderRecent(p.recent||[]);
+}
+
+function renderRecent(recent){
+  const wrap = document.getElementById('recentGames');
+  if(!recent.length){ wrap.innerHTML='<div style="font-size:0.8rem;color:var(--gray);text-align:center;padding:12px;">ยังไม่มีประวัติการเล่น</div>'; return; }
+  wrap.innerHTML = recent.slice(-5).reverse().map(r=>`
+    <div class="recent-item">
+      <div class="recent-av" style="background:${hashColor(r.char)}">${initials(r.char)}</div>
+      <div class="recent-info">
+        <div class="recent-result ${r.won?'result-win':'result-lose'}">${r.won?'✅ ชนะ':'❌ แพ้'} — ${r.char}</div>
+        <div class="recent-date">${r.date} · เดา ${r.guesses} ครั้ง</div>
+      </div>
+      <div class="recent-pts">${r.won?'+'+r.pts+' pts':''}</div>
+    </div>`).join('');
+}
+
+async function renderLeaderboard(){
+  let rows;
+  // try Firebase first
+  if(window._fb?.ready){
+    try{
+      rows = await window._fb.getLeaderboard();
+    } catch(e){ rows = null; }
+  }
+  // fallback to localStorage
+  if(!rows){
+    const profiles = getProfiles();
+    rows = Object.entries(profiles)
+      .map(([name,p])=>({displayName:name,...p}))
+      .sort((a,b)=>b.score-a.score)
+      .slice(0,10);
+  }
+
+  const podium = document.getElementById('lbPodium');
+  const top3 = rows.slice(0,3);
+  const order = top3.length>=3 ? [top3[1],top3[0],top3[2]] : top3;
+  const sizes = top3.length>=3 ? [42,52,42] : [52];
+  const crowns = ['','👑',''];
+  podium.innerHTML = order.map((r,i)=>{
+    if(!r) return '';
+    const realRank = order.indexOf(r)===1?1:order.indexOf(r)===0?2:3;
+    const rname = r.displayName||r.name||'?';
+    return `<div class="podium-item podium-${realRank}">
+      <div class="podium-avatar" style="background:${hashColor(rname)};width:${sizes[i]}px;height:${sizes[i]}px;font-size:${sizes[i]*0.3}px;">
+        ${crowns[i]?`<span class="podium-crown">${crowns[i]}</span>`:''}${initials(rname)}
+      </div>
+      <div class="podium-name">${rname}</div>
+      <div class="podium-score">${(r.score||0).toLocaleString()}</div>
+      <div class="podium-rank rank-${realRank}">#${realRank}</div>
+    </div>`;
+  }).join('');
+
+  const list = document.getElementById('lbList');
+  list.innerHTML = rows.slice(3).map((r,i)=>{
+    const rname = r.displayName||r.name||'?';
+    const isMe = rname === currentUser || r.id === window._fb?.uid;
+    return `<div class="lb-row ${isMe?'me':''}">
+      <div class="lb-num">#${i+4}</div>
+      <div class="lb-av" style="background:${hashColor(rname)}">${initials(rname)}</div>
+      <div class="lb-name">${rname}</div>
+      <div class="lb-pts">${(r.score||0).toLocaleString()}</div>
+    </div>`;
+  }).join('') || '<div style="font-size:0.8rem;color:var(--gray);padding:8px;text-align:center;">ยังไม่มีข้อมูล</div>';
+}
+
+// ── GAME ──
+function changeDifficulty(){
+  maxGuesses = DIFF[document.getElementById('diffSelect').value];
+  resetGame(true);
+}
+
+function resetGame(randomize){
+  closeModal();
+  if(randomize||!target) target = characters[Math.floor(Math.random()*characters.length)];
+  guesses=0; gameOver=false; lastWin=false;
+  document.getElementById('resultBody').innerHTML='';
+  document.getElementById('guessNum').textContent='0';
+  document.getElementById('maxGuessDisplay').textContent=maxGuesses;
+  document.getElementById('charInput').disabled=false;
+  document.getElementById('charInput').value='';
+  document.getElementById('suggestions').style.display='none';
+  renderDots();
+}
+
+function renderDots(){
+  const wrap=document.getElementById('guessDots');
+  wrap.innerHTML='';
+  for(let i=0;i<maxGuesses;i++){
+    const d=document.createElement('div');
+    d.className='gdot';
+    if(i<guesses) d.classList.add(lastWin&&i===guesses-1?'won':'used');
+    wrap.appendChild(d);
+  }
+}
+
+// ── SEARCH ──
+const input=document.getElementById('charInput');
+const suggBox=document.getElementById('suggestions');
+
+input.addEventListener('input',()=>{
+  const val=input.value.trim().toLowerCase();
+  suggBox.innerHTML='';
+  if(!val||gameOver){suggBox.style.display='none';return;}
+  const matches=characters.filter(c=>c.name.toLowerCase().includes(val)).slice(0,8);
+  if(!matches.length){suggBox.style.display='none';return;}
+  matches.forEach(c=>{
+    const div=document.createElement('div');
+    div.className='suggestion-item';
+    const suggAv = c.img
+      ? `<img src="${c.img}" style="width:34px;height:34px;border-radius:8px;object-fit:cover;object-position:top;" onerror="this.outerHTML='<div style=width:34px;height:34px;border-radius:8px;background:${hashColor(c.name)};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;color:#fff>${initials(c.name)}</div>'">`
+      : `<div style="width:34px;height:34px;border-radius:8px;background:${hashColor(c.name)};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;color:#fff">${initials(c.name)}</div>`;
+    div.innerHTML=`<div class="sugg-avatar" style="background:${hashColor(c.name)};padding:0;overflow:hidden;">${suggAv}</div>
+      <div><div class="sugg-name">${c.name}</div><div class="sugg-anime">${c.anime}</div></div>`;
+    div.onclick=()=>{ makeGuess(c); input.value=''; suggBox.style.display='none'; };
+    suggBox.appendChild(div);
+  });
+  suggBox.style.display='block';
+});
+document.addEventListener('click',e=>{ if(!suggBox.contains(e.target)&&e.target!==input) suggBox.style.display='none'; });
+
+// ── COMPARISON ──
+function cmpText(a,b){ return a===b?'correct':'wrong'; }
+function cmpPartial(a,b){
+  if(a===b) return 'correct';
+  const aw=a.split(/[\s\/\(\)]+/), bw=b.split(/[\s\/\(\)]+/);
+  return aw.some(w=>w.length>1&&bw.includes(w))?'partial':'wrong';
+}
+function cmpNum(a,b){
+  if(a===b) return {cls:'correct',arrow:''};
+  return {cls:'wrong',arrow:a<b?'▲':'▼'};
+}
+
+function makeGuess(c){
+  if(gameOver) return;
+  guesses++;
+  document.getElementById('guessNum').textContent=guesses;
+
+  const row=document.createElement('div');
+  row.className='result-row';
+
+  // img
+  const imgCell=document.createElement('div');
+  imgCell.className='rc rc-img correct';
+  if(c.img){
+    imgCell.innerHTML=`<img src="${c.img}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;object-position:top;" onerror="this.outerHTML='${avatarSvg(c.name,46)}'">`;
+  } else {
+    imgCell.innerHTML=avatarSvg(c.name,46);
+  }
+  row.appendChild(imgCell);
+
+  // name
+  cell(row, c.name, c.name===target.name?'correct':'wrong');
+  // anime
+  cell(row, c.anime, cmpText(c.anime,target.anime));
+  // gender
+  cell(row, c.gender, cmpText(c.gender,target.gender));
+  // species
+  cell(row, c.species, cmpPartial(c.species,target.species));
+  // hair
+  cell(row, c.hair, cmpPartial(c.hair,target.hair));
+  // height
+  const hc=cmpNum(c.height,target.height);
+  cell(row, c.height+'cm'+(hc.arrow?` ${hc.arrow}`:''), hc.cls);
+  // age
+  const ac=cmpNum(c.age,target.age);
+  cell(row, c.age+(ac.arrow?` ${ac.arrow}`:''), ac.cls);
+  // role
+  cell(row, c.role, cmpText(c.role,target.role));
+  // status
+  cell(row, c.status, cmpText(c.status,target.status));
+  // affiliation
+  cell(row, c.affiliation, cmpPartial(c.affiliation,target.affiliation));
+
+  document.getElementById('resultBody').prepend(row);
+
+  const won=c.name===target.name;
+  const lost=!won&&guesses>=maxGuesses;
+
+  if(won||lost){
+    gameOver=true; lastWin=won;
+    input.disabled=true;
+    const p=getProfile(currentUser);
+    p.games++;
+    let pts=0;
+    if(won){
+      pts=Math.max(10,100-((guesses-1)*Math.floor(60/maxGuesses)));
+      p.score+=pts; p.wins++; p.streak++;
+      if(p.streak>p.bestStreak) p.bestStreak=p.streak;
+    } else { p.streak=0; }
+    p.recent=p.recent||[];
+    const d=new Date();
+    p.recent.push({char:target.name,won,pts,guesses,date:`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`});
+    saveProfile(currentUser,p);
+    renderProfileUI();
+    renderLeaderboard();
+    setTimeout(()=>showModal(won,pts),400);
+  }
+  renderDots();
+}
+
+function cell(row,text,cls){
+  const d=document.createElement('div');
+  d.className=`rc ${cls}`;
+  d.textContent=text;
+  row.appendChild(d);
+}
+
+// ── REVEAL / GIVE UP ──
+function revealAnswer(){
+  if(gameOver) return;
+  if(!confirm('ต้องการดูเฉลยเลยไหมครับ? (นับเป็นแพ้)')) return;
+  gameOver=true; lastWin=false;
+  input.disabled=true;
+  const p=getProfile(currentUser);
+  p.games++; p.streak=0;
+  p.recent=p.recent||[];
+  const d=new Date();
+  p.recent.push({char:target.name,won:false,pts:0,guesses,date:`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`});
+  saveProfile(currentUser,p);
+  renderProfileUI();
+  renderDots();
+  showModal(false,0);
+}
+
+// ── MODAL ──
+function showModal(won,pts){
+  const c=target;
+  const content=document.getElementById('revealModalContent');
+  content.innerHTML=`
+    <div class="modal-title ${won?'modal-win':'modal-lose'}">${won?'🎉 ยินดีด้วย!':'😢 เสียใจด้วย...'}</div>
+    <div class="modal-char-avatar" style="background:${hashColor(c.name)}">${initials(c.name)}</div>
+    <div class="modal-char-name">${c.name}</div>
+    <div class="modal-char-anime">${c.anime}</div>
+    ${won?`<div class="modal-score">✨ ได้รับ +${pts} คะแนน!</div>`:`<div style="font-size:0.85rem;color:var(--gray);margin-bottom:12px;">คำตอบคือ <b>${c.name}</b> จาก ${c.anime}</div>`}
+    <div class="modal-props">
+      <div class="modal-prop"><div class="modal-prop-label">เพศ</div><div class="modal-prop-val">${c.gender}</div></div>
+      <div class="modal-prop"><div class="modal-prop-label">เผ่าพันธุ์</div><div class="modal-prop-val">${c.species}</div></div>
+      <div class="modal-prop"><div class="modal-prop-label">สีผม</div><div class="modal-prop-val">${c.hair}</div></div>
+      <div class="modal-prop"><div class="modal-prop-label">ส่วนสูง</div><div class="modal-prop-val">${c.height} cm</div></div>
+      <div class="modal-prop"><div class="modal-prop-label">อายุ</div><div class="modal-prop-val">${c.age}</div></div>
+      <div class="modal-prop"><div class="modal-prop-label">ประเภท</div><div class="modal-prop-val">${c.role}</div></div>
+      <div class="modal-prop"><div class="modal-prop-label">สถานะ</div><div class="modal-prop-val">${c.status}</div></div>
+      <div class="modal-prop"><div class="modal-prop-label">สังกัด</div><div class="modal-prop-val">${c.affiliation}</div></div>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn-next" onclick="resetGame(true)">🎲 เล่นรอบต่อไป</button>
+      <button class="modal-btn-close" onclick="closeModal()">ปิด</button>
+    </div>`;
+  document.getElementById('revealModal').style.display='flex';
+}
+function closeModal(){ document.getElementById('revealModal').style.display='none'; }
+
+// ── BOOT ──
+window.addEventListener('DOMContentLoaded',()=>{
+  const saved=localStorage.getItem('amd_user');
+  if(saved){
+    currentUser=saved;
+    document.getElementById('loginOverlay').style.display='none';
+    initUI();
+    resetGame(false);
+  }
+});
+
+// ══════════════════════════════════════
+// 🎮 MINI GAME — เดาตัวละครจากอีโมจิ
+// ══════════════════════════════════════
+
+// ข้อมูลอีโมจิแต่ละตัวละคร
+const EMOJI_CLUES = [
+  {name:"มังกี ดี ลูฟี่",     emojis:"🎩⚓🦷💪🏴‍☠️", hint:"โจรสลัด หมวกฟาง"},
+  {name:"โรโรโนอา โซโร",     emojis:"⚔️⚔️⚔️🟢😤",   hint:"นักดาบสามเล่ม"},
+  {name:"นามิ",               emojis:"🌩️🗺️🍊🔭💰",   hint:"นักเดินเรือ ลูฟี่แก็งค์"},
+  {name:"ซันจิ",              emojis:"🔥🦵👨‍🍳🚬❤️",   hint:"เชฟนักสู้เท้าไฟ"},
+  {name:"นิโก้ โรบิน",        emojis:"📚✋🌸🏛️🖤",   hint:"นักโบราณคดี"},
+  {name:"นารูโตะ อุซุมากิ",  emojis:"🦊🍜💨👘🔶",   hint:"ฮอคาเงะแห่งโคโนฮะ"},
+  {name:"ซาสึเกะ อุชิฮะ",    emojis:"⚡👁️🐍🖤🔥",   hint:"ชาริงกัน อุชิฮะ"},
+  {name:"ซากุระ ฮารุโนะ",    emojis:"🌸👊💊💚💆",   hint:"นินจาแพทย์ผมชมพู"},
+  {name:"คาคาชิ ฮาตาเกะ",   emojis:"📖⚡🎭😪🐶",   hint:"ครูทีม 7"},
+  {name:"อิตาชิ อุชิฮะ",     emojis:"🌙🖤👁️🍁💔",   hint:"สมาชิก Akatsuki"},
+  {name:"กาอาระ",            emojis:"🏜️😢⚱️🩸👁️",   hint:"คาเซะคาเงะแห่งซุนะ"},
+  {name:"โกคู",              emojis:"💥⬆️🐒🌏🥋",   hint:"ซูเปอร์ไซย่านักรบ Z"},
+  {name:"เวจิต้า",           emojis:"👑💥🔥😤🌕",   hint:"เจ้าชายไซย่า"},
+  {name:"ฟรีซเซอร์",         emojis:"❄️💜🛸👾💀",   hint:"จักรพรรดิจักรวาล"},
+  {name:"ทันจิโร่ คามาโดะ",  emojis:"💧🔥🪙👃🟥",   hint:"นักล่าอสูรผมดำแดง"},
+  {name:"เนซึโกะ คามาโดะ",   emojis:"🎋🩸💗😴👹",   hint:"น้องสาวที่กลายเป็นอสูร"},
+  {name:"เซนิตสึ อางาตสึมะ", emojis:"⚡😭💛🛌🦅",   hint:"นักสู้ลมหายใจสายฟ้า"},
+  {name:"กิยุ โทมิโอกะ",     emojis:"💧🌊🎭😐🧣",   hint:"เสาหลักน้ำ Demon Slayer"},
+  {name:"เคียวจูโร่ เรนโงกุ", emojis:"🔥❤️🦁😄🚂",  hint:"เสาหลักเปลวเพลิง"},
+  {name:"มูซัน คิบุตสึจิ",    emojis:"🩸👔☂️😈🌙",   hint:"ราชาอสูร"},
+  {name:"อิซุคุ มิโดริยะ",   emojis:"💚✊📓⚡🥦",   hint:"เด็กชายไร้พลังที่กลายเป็นฮีโร่"},
+  {name:"คัตสึกิ บาคุโกะ",   emojis:"💥😡🧨🔶🏆",   hint:"ระเบิดจากเหงื่อ"},
+  {name:"โชโตะ โทโดโรกิ",   emojis:"🧊🔥❄️🌡️😐",   hint:"ลูกชาย Endeavor"},
+  {name:"ออล ไมท์",         emojis:"💪🌟😄🏛️🇺🇸",   hint:"สัญลักษณ์แห่งสันติภาพ"},
+  {name:"ไลท์ ยากามิ",       emojis:"📓🍎✏️👁️⚖️",   hint:"เจ้าของสมุดมรณะ"},
+  {name:"แอล ลอว์ไลต์",      emojis:"🍰🍭🧠🕵️🦶",   hint:"นักสืบอัจฉริยะ"},
+  {name:"ไซตามะ",           emojis:"👊🦲🛒😑🦟",   hint:"ฮีโร่ที่แกร่งเกินไป"},
+  {name:"โกโจ่ ซาโตรุ",     emojis:"😎♾️🩵🌀🏫",   hint:"คาถาจาร Limitless"},
+  {name:"ยูจิ อิตาโดริ",    emojis:"💪🩸😊👹🥊",   hint:"เจ้าบ้าน Sukuna"},
+  {name:"เมกุมิ ฟุชิงุโร",   emojis:"🐕‍🦺🌑🃏😒🐾",   hint:"Ten Shadows Technique"},
+  {name:"อิชิโงะ คุโรซากิ",  emojis:"🌙⚔️🟠😤💀",   hint:"โซลรีปเปอร์ผมส้ม"},
+  {name:"โซสุเกะ ไอเซน",    emojis:"🦋🪞😏📜🕊️",   hint:"ผู้ทรยศ Soul Society"},
+  {name:"คิลลัว โซลดิค",    emojis:"⚡🩸🪀🏃🖤",   hint:"นักฆ่าตระกูล Zoldyck"},
+  {name:"กอน ฟรีคส์",       emojis:"🎣🌿✊😁🐟",   hint:"ลูกชายนักล่า"},
+  {name:"ฮิโซกะ โมโรว์",    emojis:"🃏🔮🩸😈♠️",   hint:"นักมายากลอันตราย"},
+  {name:"อาสตะ",            emojis:"💪📯🗡️😤🍀",   hint:"ดาบต้านเวทมนตร์"},
+  {name:"เด็นจิ", img:"https://cdn.myanimelist.net/images/characters/9/506351.jpg",           emojis:"🪚🐶❤️🩸😋",   hint:"มนุษย์เลื่อยยนต์"},
+  {name:"มาคิมะ",          emojis:"👁️🐕🎯🩺😈",   hint:"ผู้ควบคุมทุกสิ่ง"},
+  {name:"เซ็นคุ อิชิงามิ",  emojis:"🧪⚗️🔬💡🪨",   hint:"อัจฉริยะวิทยาศาสตร์"},
+  {name:"อัญยะ ฟอร์เจอร์",  emojis:"🧠😮💗🥜🎒",   hint:"เด็กอ่านใจคน"},
+  {name:"ลอยด์ ฟอร์เจอร์",  emojis:"🕵️💼👔🌹🤥",   hint:"สายลับ Twilight"},
+  {name:"โชโย ฮินาตะ",      emojis:"🏐🟠⚡🦅😄",   hint:"เจ้าของการกระโดดสูง"},
+  {name:"ยูสุเกะ อุราเมชิ",  emojis:"👊💙🔫😏👻",   hint:"นักสืบวิญญาณ"},
+  {name:"ฮิเอย์",           emojis:"🔥👁️⚔️🖤😠",   hint:"ปีศาจไฟและตาที่สาม"},
+  {name:"คุรามะ",           emojis:"🦊🌹🪤🌿😶",   hint:"จิ้งจอกเก้าหางแฝงร่างมนุษย์"},
+  {name:"ฮานามิชิ ซากุรากิ", emojis:"🏀🔴💪😤🦁",   hint:"ดาวเด่นบาสทีมโชโฮคุ"},
+  {name:"กินโตกิ ซาคาตะ",   emojis:"🍭🗡️🥄😴🪗",   hint:"ซามูไรผมเงินแห่งเอโดะ"},
+  {name:"โจทาโร่ คูโจ",      emojis:"⛵👊⏱️🎓😤",   hint:"Star Platinum MUDA MUDA"},
+  {name:"ดิโอ แบรนโด",       emojis:"🧛⏱️❄️😈💛",   hint:"แวมไพร์หยุดเวลา ZA WARUDO"},
+  {name:"ยูกิ มูโตะ",        emojis:"🃏👑⚡🎮🔮",   hint:"เจ้าแห่งเกมส์ดูเอล"},
+  {name:"เคนชิน ฮิมุระ",     emojis:"🗡️❌🌸🔴😌",   hint:"นักดาบจรจัดไม่ฆ่าคน"},
+  {name:"โบรุโตะ อุซุมากิ",  emojis:"⚡🔮💙🎯👦",   hint:"ลูกชายฮอคาเงะ"},
+  {name:"มาดาระ อุชิฮะ",     emojis:"🌀👁️🔥💀👹",   hint:"บรรพบุรุษอุชิฮะผู้ยิ่งใหญ่"},
+  {name:"มินาโตะ นามิกาเซะ",  emojis:"💛⚡🔑🌪️💛",  hint:"คาเงะที่ 4 แห่งโคโนฮะ"},
+  {name:"บิ๊กมัม",           emojis:"🍰😱👸💀🌈",   hint:"ราชินีจักรพรรดิทะเล"},
+  {name:"แชงค์ส",            emojis:"🍶🔴⚓💪🤝",   hint:"โจรสลัดจักรพรรดิผมแดง"},
+  {name:"โครโคไดล์",         emojis:"🐊🏜️🌪️🦾🚬",   hint:"อดีตสมาชิก Shichibukai"},
+  {name:"แอนดรอยด์ 18",      emojis:"🤖💛👠♾️💪",   hint:"ไซบอร์กหญิงทรงพลัง"},
+  {name:"มาจิน บู",          emojis:"🍬💗🌀😱💣",   hint:"ปีศาจสีชมพูเปลี่ยนคนเป็นขนม"},
+  {name:"เซลล์",             emojis:"🧬🐛💪😈🔋",   hint:"ชีวิตสังเคราะห์สมบูรณ์แบบ"},
+  {name:"ออบิโตะ อุชิฮะ",   emojis:"🌀🎭🍂🖤💔",   hint:"อดีตเพื่อนของคาคาชิ"},
+];
+
+// ── MINI GAME STATE ──
+let mgQuestions = [];
+let mgCurrent = 0;
+let mgScore = 0;
+let mgAnswered = false;
+const MG_QUESTIONS_PER_DAY = 5;
+const MG_EXP_REWARD = 50;
+const MG_EXP_PER_CORRECT = 15;
+
+function getMgKey(){ 
+  const d = new Date();
+  return `amd_mg_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}_${currentUser}`;
+}
+
+function hasDoneMgToday(){
+  return !!localStorage.getItem(getMgKey());
+}
+
+function markMgDone(score){
+  localStorage.setItem(getMgKey(), JSON.stringify({score, ts: Date.now()}));
+}
+
+function buildMgQuestions(){
+  // seed by date so everyone gets same set
+  const d = new Date();
+  const seed = d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+  const available = EMOJI_CLUES.filter(Boolean);
+  // pseudo-shuffle with seed
+  const shuffled = [...available].sort((a,b) => {
+    const ha = simpleHash(a.name + seed);
+    const hb = simpleHash(b.name + seed);
+    return ha - hb;
+  });
+  return shuffled.slice(0, MG_QUESTIONS_PER_DAY);
+}
+
+function simpleHash(str){
+  let h = 0;
+  for(let i=0;i<str.length;i++) h = (Math.imul(31,h) + str.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+function buildChoices(correct){
+  // pick 3 random wrong answers
+  const pool = EMOJI_CLUES.filter(c => c.name !== correct.name);
+  const shuffled = pool.sort(() => Math.random()-0.5).slice(0,3);
+  const all = [...shuffled, correct].sort(() => Math.random()-0.5);
+  return all;
+}
+
+// ── OPEN / RENDER ──
+function openMiniGame(){
+  if(hasDoneMgToday()){
+    renderMgDoneScreen();
+    document.getElementById('mgOverlay').style.display = 'flex';
+    return;
+  }
+  mgQuestions = buildMgQuestions();
+  mgCurrent = 0;
+  mgScore = 0;
+  renderMgQuestion();
+  document.getElementById('mgOverlay').style.display = 'flex';
+}
+
+function closeMiniGame(){
+  document.getElementById('mgOverlay').style.display = 'none';
+}
+
+document.getElementById('mgOverlay').addEventListener('click', e => {
+  if(e.target === document.getElementById('mgOverlay')) closeMiniGame();
+});
+
+function renderMgDoneScreen(){
+  const data = JSON.parse(localStorage.getItem(getMgKey()) || '{}');
+  const score = data.score || 0;
+  document.getElementById('mgBox').innerHTML = `
+    <div class="mg-header">
+      <h2>🎮 มินิเกมประจำวัน</h2>
+      <p>เดาตัวละครจากอีโมจิ</p>
+    </div>
+    <div class="mg-done-wrap">
+      <div class="mg-done-icon">${score >= MG_QUESTIONS_PER_DAY ? '🏆' : score >= 3 ? '⭐' : '😅'}</div>
+      <h3>${score >= MG_QUESTIONS_PER_DAY ? 'เล่นได้สมบูรณ์แบบ!' : `ทำได้ ${score}/${MG_QUESTIONS_PER_DAY} ข้อ`}</h3>
+      <p>คุณได้เล่นมินิเกมวันนี้ไปแล้ว<br>กลับมาพรุ่งนี้เพื่อรับ EXP ใหม่นะครับ!</p>
+      <div class="mg-timer" id="mgCountdown"></div>
+      <div style="margin-top:16px;">
+        <button class="mg-btn mg-btn-close" onclick="closeMiniGame()" style="width:100%;">ปิด</button>
+      </div>
+    </div>`;
+  startMgCountdown();
+}
+
+function startMgCountdown(){
+  function update(){
+    const el = document.getElementById('mgCountdown');
+    if(!el) return;
+    const now = new Date();
+    const midnight = new Date(now); midnight.setHours(24,0,0,0);
+    const diff = midnight - now;
+    const h = Math.floor(diff/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    el.textContent = `⏰ รีเซ็ตในอีก ${h} ชม. ${m} นาที ${s} วินาที`;
+  }
+  update();
+  const t = setInterval(()=>{
+    if(!document.getElementById('mgCountdown')){ clearInterval(t); return; }
+    update();
+  }, 1000);
+}
+
+function renderMgQuestion(){
+  const q = mgQuestions[mgCurrent];
+  const choices = buildChoices(q);
+  const total = MG_QUESTIONS_PER_DAY;
+  const progressPct = (mgCurrent/total)*100;
+
+  document.getElementById('mgBox').innerHTML = `
+    <div class="mg-header">
+      <h2>🎮 มินิเกมประจำวัน</h2>
+      <p>ข้อ ${mgCurrent+1} / ${total}</p>
+      <div style="background:rgba(255,255,255,0.3);border-radius:10px;height:5px;margin-top:10px;">
+        <div style="background:#fff;width:${progressPct}%;height:100%;border-radius:10px;transition:width 0.4s;"></div>
+      </div>
+    </div>
+    <div class="mg-body">
+      <div class="mg-emoji-wrap">
+        <div class="mg-emojis">${q.emojis}</div>
+      </div>
+      <p style="font-size:0.82rem;color:var(--gray);text-align:center;margin-bottom:12px;font-weight:600;">ตัวละครนี้คือใคร?</p>
+      <div class="mg-choices" id="mgChoices">
+        ${choices.map(c => `
+          <button class="mg-choice" onclick="answerMg('${c.name.replace(/'/g,"\\'")}','${q.name.replace(/'/g,"\\'")}')">
+            ${c.name}
+          </button>`).join('')}
+      </div>
+      <div class="mg-result" id="mgResult"></div>
+      <div class="mg-footer">
+        <button class="mg-btn mg-btn-close" onclick="closeMiniGame()">ปิด</button>
+        <button class="mg-btn mg-btn-next hidden" id="mgNextBtn" onclick="nextMgQuestion()">
+          ${mgCurrent+1 < total ? 'ข้อต่อไป →' : 'ดูผลลัพธ์ 🏆'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function answerMg(chosen, correct){
+  if(mgAnswered) return;
+  mgAnswered = true;
+
+  const buttons = document.querySelectorAll('.mg-choice');
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    if(btn.textContent.trim() === correct) btn.classList.add('correct');
+    else if(btn.textContent.trim() === chosen && chosen !== correct) btn.classList.add('wrong');
+  });
+
+  const result = document.getElementById('mgResult');
+  const isCorrect = chosen === correct;
+  if(isCorrect) mgScore++;
+
+  result.style.display = 'block';
+  result.className = `mg-result ${isCorrect ? 'win' : 'lose'}`;
+  result.innerHTML = isCorrect
+    ? `✅ ถูกต้อง! คือ <b>${correct}</b><span class="mg-exp-badge">+${MG_EXP_PER_CORRECT} EXP</span>`
+    : `❌ ไม่ถูก! คำตอบคือ <b>${correct}</b>`;
+
+  document.getElementById('mgNextBtn')?.classList.remove('hidden');
+  mgAnswered = false;
+}
+
+function nextMgQuestion(){
+  mgCurrent++;
+  if(mgCurrent >= MG_QUESTIONS_PER_DAY){
+    finishMiniGame();
+  } else {
+    renderMgQuestion();
+  }
+}
+
+function finishMiniGame(){
+  markMgDone(mgScore);
+
+  // give EXP
+  const bonusExp = mgScore * MG_EXP_PER_CORRECT;
+  const p = getProfile(currentUser);
+  const oldScore = p.score || 0;
+  p.score = oldScore + bonusExp;
+  saveProfile(currentUser, p);
+  checkLevelUp(oldScore, p.score);
+  renderProfileUI();
+
+  // update card UI
+  const card = document.getElementById('dailyMgCard');
+  if(card) card.classList.add('played');
+  const btn = document.getElementById('mgOpenBtn');
+  if(btn){ btn.textContent = '✅ เล่นแล้ววันนี้'; btn.disabled = true; }
+
+  const stars = mgScore >= MG_QUESTIONS_PER_DAY ? '🌟🌟🌟' : mgScore >= 3 ? '⭐⭐' : '⭐';
+  const msg = mgScore >= MG_QUESTIONS_PER_DAY ? 'สุดยอด! ตอบถูกทุกข้อ!' : mgScore >= 3 ? 'เก่งมาก! ทำได้ดี!' : 'ลองใหม่พรุ่งนี้นะครับ!';
+
+  document.getElementById('mgBox').innerHTML = `
+    <div class="mg-header">
+      <h2>🎉 จบมินิเกมแล้ว!</h2>
+      <p>ผลลัพธ์ประจำวัน</p>
+    </div>
+    <div class="mg-done-wrap">
+      <div class="mg-done-icon">${stars}</div>
+      <h3>${msg}</h3>
+      <p style="font-size:1rem;font-weight:700;color:var(--purple);margin:12px 0;">
+        ตอบถูก ${mgScore}/${MG_QUESTIONS_PER_DAY} ข้อ
+      </p>
+      <div style="background:var(--purple-light);border-radius:12px;padding:12px;margin:10px 0;">
+        <div style="font-size:0.85rem;color:var(--purple);font-weight:700;">✨ EXP ที่ได้รับวันนี้</div>
+        <div style="font-size:1.5rem;font-weight:800;color:var(--purple);">+${bonusExp} EXP</div>
+      </div>
+      <div class="mg-timer" id="mgCountdown"></div>
+      <div style="margin-top:16px;">
+        <button class="mg-btn mg-btn-next" onclick="closeMiniGame()" style="width:100%;">ปิด</button>
+      </div>
+    </div>`;
+  startMgCountdown();
+}
+
+// check on load if already played today
+function checkMgDailyState(){
+  if(hasDoneMgToday()){
+    const card = document.getElementById('dailyMgCard');
+    if(card) card.classList.add('played');
+    const btn = document.getElementById('mgOpenBtn');
+    if(btn){ btn.textContent = '✅ เล่นแล้ววันนี้'; btn.disabled = true; btn.style.background='#9CA3AF'; }
+  }
+}
+
+window.openMiniGame = openMiniGame;
+window.closeMiniGame = closeMiniGame;
+window.answerMg = answerMg;
+window.nextMgQuestion = nextMgQuestion;
+
+// ══════════════════════════════════════
+// 🌟 ตัวละครประจำวัน — ประวัติตัวละคร
+// ══════════════════════════════════════
+const CHAR_PROFILES = [
+  {
+    name:"มังกี ดี ลูฟี่", anime:"One Piece", role:"เอก", emoji:"🎩", img:"https://i.imgur.com/EqTGCmi.gif",
+    birthday:"5 พฤษภาคม", age:"19 ปี", height:"174 cm", affiliation:"หมวกฟาง",
+    bio:"ลูฟี่เป็นเด็กหนุ่มจากหมู่บ้านฟุชาที่กินผลปีศาจ 'กูมุกูมุโนะมิ' จนร่างกายกลายเป็นยาง เขาตั้งเป้าหมายอยากเป็น 'ราชาโจรสลัด' ตั้งแต่เด็กหลังได้รับแรงบันดาลใจจากแชงค์ส ลูฟี่รวบรวมลูกเรือออกเดินทางข้ามท้องทะเล แม้ไม่มีความสามารถพิเศษด้านการเดินเรือหรือกลยุทธ์ แต่ด้วยใจที่กล้าและไม่ยอมแพ้ เขาพิชิตศัตรูได้ทุกคน",
+    goal:"ค้นหาสมบัติ One Piece และเป็นราชาโจรสลัด",
+    quote:"\"ข้าจะเป็นราชาโจรสลัด!\"",
+    trivia:"ชอบกินเนื้อเป็นชีวิตจิตใจ และหัวเราะได้ทุกสถานการณ์"
+  },
+  {
+    name:"โรโรโนอา โซโร", anime:"One Piece", role:"เอก", emoji:"⚔️",
+    birthday:"11 พฤศจิกายน", age:"21 ปี", height:"181 cm", affiliation:"หมวกฟาง",
+    bio:"โซโรเป็นอดีตนักดาบรับจ้างที่มีฝีมือเป็นเลิศ ฝึกฝนมาตั้งแต่เด็กในโรงเรียนดาบของ 'โคอุชิโร' เขาสาบานกับ 'คุยินะ' เพื่อนที่เสียชีวิตว่าจะกลายเป็นนักดาบที่เก่งที่สุดในโลก ปัจจุบันใช้สไตล์ดาบสามเล่ม (ซันโตรยู) และฝึกเพื่อเอาชนะ 'มิฮอว์ค' นักดาบอันดับหนึ่ง",
+    goal:"กลายเป็นนักดาบที่แกร่งที่สุดในโลก",
+    quote:"\"ถ้าข้าพ่ายแพ้ ความฝันของลูฟี่จะไม่มีวันเป็นจริง\"",
+    trivia:"หลับในทุกที่ทุกเวลา และไม่มีทิศทาง — หลงทางเป็นนิสัย"
+  },
+  {
+    name:"นารูโตะ อุซุมากิ", anime:"Naruto", role:"เอก", emoji:"🍜",
+    birthday:"10 ตุลาคม", age:"17 ปี", height:"166 cm", affiliation:"หมู่บ้านโคโนฮะ",
+    bio:"นารูโตะเกิดในคืนที่จิ้งจอกเก้าหาง 'คิวบิ' ถูกผนึกเข้าไปในร่างของเขาโดยพ่อผู้เป็นฮอคาเงะที่ 4 ตั้งแต่เด็กเขาโดดเดี่ยวไม่มีเพื่อน ถูกชาวบ้านรังเกียจ แต่ความฝันที่จะเป็น 'ฮอคาเงะ' ทำให้เขาสู้ต่อไปไม่เคยยอมแพ้ ด้วยพลังจิ้งจอกและความพยายาม เขาเติบโตเป็นนินจาที่แข็งแกร่งที่สุดแห่งโคโนฮะ",
+    goal:"เป็นฮอคาเงะและได้รับการยอมรับจากทุกคน",
+    quote:"\"ข้าจะพิสูจน์ให้ทุกคนเห็นว่าข้าเป็นใคร — นั่นคือหนทางนินจาของข้า!\"",
+    trivia:"กินราเมนเป็นอาหารโปรดตลอดกาล โดยเฉพาะร้านอิชิระกุ"
+  },
+  {
+    name:"ซาสึเกะ อุชิฮะ", anime:"Naruto", role:"เอก", emoji:"⚡",
+    birthday:"23 กรกฎาคม", age:"17 ปี", height:"168 cm", affiliation:"หมู่บ้านโคโนฮะ",
+    bio:"ซาสึเกะเป็นเด็กอัจฉริยะจากตระกูลอุชิฮะ แต่ชีวิตเปลี่ยนไปตลอดกาลในคืนที่อิตาชิพี่ชายสังหารทุกคนในตระกูล เขาใช้ชีวิตเพื่อแก้แค้นพี่ชาย แต่เมื่อรู้ความจริงว่าอิตาชิทำเพื่อปกป้องหมู่บ้าน ซาสึเกะก็หันมาต่อสู้เพื่ออนาคตของโลกนินจาแทน",
+    goal:"แก้แค้นพี่ชาย (เดิม) → ปฏิวัติระบบนินจา",
+    quote:"\"ข้าเป็นอุชิฮะ ซาสึเกะ และข้าจะสังหารพี่ชาย\"",
+    trivia:"อาหารโปรดคือข้าวปั้นสาหร่ายและมะเขือยาว — เกลียดของหวาน"
+  },
+  {
+    name:"โกคู", anime:"Dragon Ball", role:"เอก", emoji:"🐒",
+    birthday:"ไม่ทราบแน่ชัด", age:"43 ปี (ตามเวลาโลก)", height:"175 cm", affiliation:"นักรบ Z",
+    bio:"โกคูเกิดบนดาวไซย่าในชื่อ 'คาคาโรท' และถูกส่งมายังโลกในฐานะนักรบพิชิต แต่อุบัติเหตุทำให้เขาสูญเสียความทรงจำและเติบโตเป็นคนดีภายใต้การดูแลของปู่ Gohan ด้วยความใฝ่ฝันในการต่อสู้และปกป้องคนที่รัก เขากลายเป็นนักสู้ที่แกร่งที่สุดในจักรวาล",
+    goal:"ต่อสู้กับคู่ต่อสู้ที่แข็งแกร่งที่สุด และปกป้องโลก",
+    quote:"\"ข้าชื่อโกคู — Son Goku และข้าเป็นไซย่า!\"",
+    trivia:"กินอาหารได้มหาศาล และมักลืมชื่อศัตรูหลังจากชนะ"
+  },
+  {
+    name:"ทันจิโร่ คามาโดะ", anime:"Demon Slayer", role:"เอก", emoji:"💧",
+    birthday:"14 กรกฎาคม", age:"16 ปี", height:"165 cm", affiliation:"คณะปราบอสูร",
+    bio:"ทันจิโร่เป็นลูกชายช่างถ่านที่ใจดีและมีความสามารถพิเศษด้านการดมกลิ่น ชีวิตพลิกผันเมื่อมูซันสังหารครอบครัวและเปลี่ยนน้องสาวเนซึโกะให้เป็นอสูร เขาเข้าร่วมคณะปราบอสูรเพื่อหาทางเปลี่ยนเนซึโกะกลับเป็นมนุษย์ โดยใช้ลมหายใจแห่งสายน้ำและฮิโนกามิ คาคุไม",
+    goal:"เปลี่ยนน้องสาวกลับเป็นมนุษย์และกำจัดมูซัน",
+    quote:"\"น้าฉันจะต้องกลายเป็นมนุษย์อีกครั้ง!\"",
+    trivia:"มีรอยแผลเป็นบนหน้าผากที่โตขึ้นเรื่อย ๆ ตามพลังที่เพิ่มขึ้น"
+  },
+  {
+    name:"อิซุคุ มิโดริยะ", anime:"My Hero Academia", role:"เอก", emoji:"💚",
+    birthday:"15 กรกฎาคม", age:"15 ปี", height:"166 cm", affiliation:"U.A. High School",
+    bio:"มิโดริยะเกิดมาในโลกที่ 80% ของประชากรมีพลัง Quirk แต่เขากลับไม่มีพลังใด ๆ แม้จะถูกดูถูก เขาไม่เคยละทิ้งความฝันที่อยากเป็นฮีโร่ ออล ไมท์เห็นศักยภาพในตัวเขาและถ่ายทอด 'One For All' ให้ ทำให้เขากลายเป็นผู้สืบทอดพลังและก้าวสู่การเป็นฮีโร่ที่ยิ่งใหญ่",
+    goal:"เป็นฮีโร่อันดับหนึ่งของโลก เหมือนออล ไมท์",
+    quote:"\"ฉันสามารถทำได้! Plus Ultra!\"",
+    trivia:"จดบันทึกการวิเคราะห์ Quirk และกลยุทธ์ของฮีโร่ทุกคนอย่างละเอียด"
+  },
+  {
+    name:"ไลท์ ยากามิ", anime:"Death Note", role:"เอก", emoji:"📓",
+    birthday:"28 กุมภาพันธ์", age:"17 ปี (ต้นเรื่อง)", height:"179 cm", affiliation:"Kira",
+    bio:"ไลท์เป็นนักเรียนอัจฉริยะระดับประเทศที่รู้สึกเบื่อหน่ายกับโลกที่เต็มไปด้วยความชั่วร้าย เมื่อพบ 'Death Note' สมุดที่สามารถฆ่าคนได้ด้วยการเขียนชื่อ เขาตัดสินใจสร้างโลกใหม่ที่ปราศจากอาชญากร ในฐานะ 'Kira' เทพเจ้าแห่งโลกใหม่ แต่เส้นทางนี้พาเขาลงสู่ความมืด",
+    goal:"สร้างโลกใหม่ที่ปราศจากอาชญากรรมในฐานะเทพเจ้า",
+    quote:"\"ข้าคือไลท์ ยากามิ และข้าคือเทพเจ้าของโลกใหม่!\"",
+    trivia:"IQ สูงมาก ชอบกินมันฝรั่งทอด และวางแผนหลายขั้นล่วงหน้าเสมอ"
+  },
+  {
+    name:"โกโจ่ ซาโตรุ", anime:"Jujutsu Kaisen", role:"สมทบ", emoji:"😎",
+    birthday:"7 ธันวาคม", age:"28 ปี", height:"190 cm", affiliation:"โรงเรียนมัธยมจูจุตสึโตเกียว",
+    bio:"โกโจ่เป็นผู้ใช้คาถาที่แข็งแกร่งที่สุดในโลก เกิดมาพร้อม 'Six Eyes' และความสามารถ 'Limitless' ที่ควบคุมความว่างเปล่าระหว่างอะตอม เขาเป็นครูที่แหกขนบเดิมและต้องการปลูกฝังคนรุ่นใหม่ให้แข็งแกร่งพอจะเปลี่ยนระบบคาถาจาร ปัจจุบันถูกผนึกและต่อมาเสียชีวิตในการต่อสู้กับซุคุนะ",
+    goal:"เปลี่ยนโลกคาถาจารโดยผ่านการสร้างคนรุ่นใหม่",
+    quote:"\"ทั่วทั้งสวรรค์และดิน...มีแต่ข้าผู้เดียวที่ยิ่งใหญ่!\"",
+    trivia:"ชอบขนมหวานมาก โดยเฉพาะ Kikufuku และ Mochi จากเกียวโต"
+  },
+  {
+    name:"อิชิโงะ คุโรซากิ", anime:"Bleach", role:"เอก", emoji:"🌙",
+    birthday:"15 กรกฎาคม", age:"17 ปี", height:"181 cm", affiliation:"Soul Society",
+    bio:"อิชิโงะเป็นมนุษย์ธรรมดาที่มีพลังจิตสูงมาแต่กำเนิด เขาได้รับพลังโซลรีปเปอร์จากรุเกียโดยบังเอิญและกลายเป็นโซลรีปเปอร์แทน ด้วยแรงจูงใจในการปกป้องคนที่รัก เขาฝ่าฟันศัตรูทั้ง Soul Society ฮัวโก้มุนโด้ และกองทัพ Wandenreich เผยให้เห็นความลับในสายเลือดของตัวเอง",
+    goal:"ปกป้องคนที่รัก ทุกคน ทุกครั้ง",
+    quote:"\"ข้าจะไม่ปล่อยให้เพื่อนตาย แม้แต่คนเดียว\"",
+    trivia:"ผมสีส้มเป็นธรรมชาติ ไม่ใช่ย้อมสี — เคยถูกแกล้งเรื่องนี้ตั้งแต่เด็ก"
+  },
+  {
+    name:"คิลลัว โซลดิค", anime:"Hunter x Hunter", role:"เอก", emoji:"⚡",
+    birthday:"7 กรกฎาคม", age:"12 ปี", height:"158 cm", affiliation:"ตระกูล Zoldyck",
+    bio:"คิลลัวเกิดในตระกูลนักฆ่าชื่อดัง ถูกฝึกทรมานมาตั้งแต่เด็กเพื่อเป็นนักฆ่าสายเลือดบริสุทธิ์ แต่เขาหนีออกจากบ้านเพื่อเข้าสอบ Hunter ด้วยความเบื่อหน่าย และได้พบกับกอนที่กลายเป็นเพื่อนซี้คนแรกในชีวิต ความสัมพันธ์นี้เปลี่ยนเขาจากนักฆ่าไร้ความรู้สึกสู่เด็กที่รู้จักรัก",
+    goal:"เดินทางไปกับกอนและค้นหาความหมายของเสรีภาพ",
+    quote:"\"กอนคือเพื่อนซี้คนแรกในชีวิตข้า\"",
+    trivia:"ชอบช็อกโกแลต Chocrobo เป็นชีวิตจิตใจ และเป็นคนเดียวในตระกูลที่หนีออกจากบ้าน"
+  },
+  {
+    name:"ไซตามะ", anime:"One Punch Man", role:"เอก", emoji:"👊",
+    birthday:"9 มิถุนายน", age:"25 ปี", height:"175 cm", affiliation:"สมาคมฮีโร่",
+    bio:"ไซตามะเป็นฮีโร่ที่แข็งแกร่งที่สุดในโลก ชนะทุกการต่อสู้ด้วยหมัดเดียว เขาฝึกฝนอย่างหนักจน 'ผมหลุดร่วงหมดหัว' แต่ผลลัพธ์ที่ได้คือพลังไร้ขีดจำกัด ปัญหาคือเขาไม่รู้สึกตื่นเต้นอีกต่อไปเพราะไม่มีใครสู้ได้ เขาเป็นฮีโร่ด้วยความสนุก ไม่ใช่เพื่อชื่อเสียง",
+    goal:"หาคู่ต่อสู้ที่แท้จริงที่ทำให้หัวใจเต้นแรงอีกครั้ง",
+    quote:"\"ข้าเป็นฮีโร่เพราะอยากเป็น — ไม่ใช่เพราะอยากได้รับการยอมรับ\"",
+    trivia:"ประหยัดสุด ๆ ชอบซื้อของลดราคาที่ซูเปอร์มาร์เก็ตในวันสุดท้าย"
+  },
+  {
+    name:"เด็นจิ", anime:"Chainsaw Man", role:"เอก", emoji:"🪚",
+    birthday:"ไม่ทราบ", age:"16 ปี", height:"173 cm", affiliation:"หน่วยปราบปีศาจโตเกียว",
+    bio:"เด็นจิเกิดมาในสภาพยากจนข้นแค้น สืบทอดหนี้ของพ่อที่เสียชีวิต เขาดำรงชีพด้วยการล่าปีศาจกับสุนัขปีศาจ 'โปชิตะ' แต่เมื่อถูกทรยศและสังหาร โปชิตะผสานตัวเองเข้ากับเด็นจิทำให้เขาฟื้นคืนชีพในฐานะ 'Chainsaw Man' ผู้มีเลื่อยยนต์งอกออกจากร่าง",
+    goal:"ใช้ชีวิตธรรมดา กินขนมปังแยม และมีคนรัก",
+    quote:"\"ฉันแค่อยากใช้ชีวิตแบบปกติ...กินขนมปังกับแยม\"",
+    trivia:"ฝันเล็ก ๆ น้อย ๆ คือการกินขนมปังแยมอย่างอิ่มท้อง"
+  },
+  {
+    name:"อัญยะ ฟอร์เจอร์", anime:"Spy x Family", role:"เอก", emoji:"🧠",
+    birthday:"Unknown (อย่างเป็นทางการ 20 ธ.ค.)", age:"6 ปี", height:"110 cm", affiliation:"ตระกูล Forger",
+    bio:"อัญยะเป็นเด็กที่เกิดจากการทดลองลับและมีพลังพิเศษในการอ่านใจคน เธอหนีออกจากสถานเลี้ยงเด็กกำพร้าหลายครั้งจนได้พบกับลอยด์ (สายลับ) และยอร์ (นักฆ่า) ที่กลายมาเป็นครอบครัวปลอม แม้จะรู้ความลับทุกอย่าง เธอเก็บปากเงียบเพราะคิดว่ามันสนุกดี",
+    goal:"เข้าเรียนที่ Eden Academy เพื่อช่วยพ่อในภารกิจลับ",
+    quote:"\"ฮาฮ่า! (เสียงหัวเราะในใจ)\"",
+    trivia:"ชอบ SPY WARS การ์ตูนสายลับที่ทำให้เธออยากมีพ่อเหมือนสายลับ"
+  },
+  {
+    name:"เซ็นคุ อิชิงามิ", anime:"Dr. Stone", role:"เอก", emoji:"🧪",
+    birthday:"4 มกราคม", age:"16 ปี", height:"165 cm", affiliation:"อาณาจักรแห่งวิทยาศาสตร์",
+    bio:"เซ็นคุเป็นอัจฉริยะด้านวิทยาศาสตร์ที่ท่องจำสูตรและกฎทางวิทยาศาสตร์ได้ทุกอย่าง เมื่อมนุษยชาติถูกกลายเป็นหินทั้งโลก เขาตื่นขึ้นมาหลัง 3,700 ปีในโลกยุคหิน มุ่งมั่นสร้างอารยธรรมขึ้นใหม่ตั้งแต่ศูนย์ด้วยวิทยาศาสตร์ เพื่อช่วยเหลือทุกคนที่ถูกทำให้เป็นหิน",
+    goal:"ฟื้นฟูอารยธรรมมนุษย์ด้วยวิทยาศาสตร์ 10 พันล้านเปอร์เซ็นต์",
+    quote:"\"10 พันล้านเปอร์เซ็นต์ ยืนยัน!\"",
+    trivia:"สามารถคำนวณในหัวได้เร็วกว่าเครื่องคำนวณ และไม่เคยยอมรับข้อจำกัดของมนุษย์"
+  },
+  {
+    name:"โชโย ฮินาตะ", anime:"Haikyuu!!", role:"เอก", emoji:"🏐",
+    birthday:"21 มิถุนายน", age:"15 ปี", height:"164 cm", affiliation:"โรงเรียนคารัสโนะ",
+    bio:"ฮินาตะเป็นเด็กที่หลงรักวอลเลย์บอลตั้งแต่ได้เห็น 'Little Giant' นักกีฬาตัวเล็กที่ยิ่งใหญ่ แม้ตัวเองจะเตี้ยกว่านักกีฬาทั่วไปมาก เขาชดเชยด้วยการกระโดดสูงผิดมนุษย์และความเร็วที่ว่องไว จนได้ร่วมทีมกับคาเงยามะและพัฒนา 'Quick Attack' อันโด่งดัง",
+    goal:"ขึ้นไปยืนบนเวทีสูงสุดของวอลเลย์บอล",
+    quote:"\"ฉันอาจตัวเล็ก แต่ฉันสามารถบินได้!\"",
+    trivia:"กลัวนักกีฬาตัวสูงในครั้งแรกที่เจอ แต่เอาชนะความกลัวได้ทุกครั้ง"
+  },
+  {
+    name:"ยูสุเกะ อุราเมชิ", anime:"Yu Yu Hakusho", role:"เอก", emoji:"👊", img:"https://i.imgur.com/dBzrN4v.gif",
+    birthday:"26 มีนาคม", age:"14 ปี", height:"175 cm", affiliation:"นักสืบวิญญาณ",
+    bio:"ยูสุเกะเป็นเด็กเกเรชื่อฉาวที่ไม่มีใครคาดว่าจะทำอะไรดี แต่เขาเสียชีวิตขณะกระโดดช่วยเด็กจากรถ สิ่งนี้ทำให้โลกวิญญาณประหลาดใจและให้โอกาสเขาฟื้นคืนชีพ แลกกับการทำงานเป็น 'นักสืบวิญญาณ' สืบสวนและต่อสู้กับปีศาจ เขาค้นพบพลังที่ซ่อนอยู่ในตัวเองและต้นกำเนิดที่ไม่คาดฝัน",
+    goal:"ปกป้องโลกมนุษย์จากปีศาจ และค้นหาตัวตนที่แท้จริง",
+    quote:"\"ข้าไม่ใช่นักบุญ แต่ข้าก็ไม่ทิ้งใครไว้เบื้องหลัง\"",
+    trivia:"ชอบต่อสู้และกินของอร่อย — แต่ก็แบกรับความรับผิดชอบเงียบ ๆ เสมอ"
+  },
+  {
+    name:"ฮานามิชิ ซากุรากิ", anime:"Slam Dunk", role:"เอก", emoji:"🏀",
+    birthday:"1 เมษายน", age:"16 ปี", height:"189 cm", affiliation:"โรงเรียนโชโฮคุ",
+    bio:"ซากุรากิเป็นเด็กนักเลงผมแดงที่ไม่เคยสนใจบาสเกตบอล แต่เมื่อ 'ฮาร์โกะ' สาวที่เขาชอบชวนให้ลอง เขาก็เข้าร่วมทีม แม้จะไม่มีทักษะพื้นฐานเลย แต่พรสวรรค์ด้านร่างกายและความพยายามทำให้เขาพัฒนาอย่างรวดเร็ว จนกลายเป็นกำลังสำคัญของทีมโชโฮคุ",
+    goal:"พิสูจน์ให้ฮาร์โกะเห็นว่าเขาเป็นนักบาสเกตบอลอัจฉริยะ",
+    quote:"\"ข้าคือ ฮานามิชิ ซากุรากิ อัจฉริยะบาสเกตบอล!\"",
+    trivia:"ถูกปฏิเสธโดยผู้หญิง 50 คนก่อนจะพบฮาร์โกะ"
+  },
+  {
+    name:"กินโตกิ ซาคาตะ", anime:"Gintama", role:"เอก", emoji:"🍭",
+    birthday:"October (ไม่ระบุวัน)", age:"28 ปี", height:"175 cm", affiliation:"Yorozuya",
+    bio:"กินโตกิเป็นอดีตนักรบ 'โจอุย' ที่ต่อสู้กับการรุกรานของเอเลี่ยน แต่หลังจากสงครามสิ้นสุด เขาใช้ชีวิตเรียบง่ายในฐานะนายหน้ารับจ้างทั่วไปในยุคเอโดะที่มีเอเลี่ยนอยู่ร่วม เขาดูเหมือนคนขี้เกียจชอบกิน Jump และน้ำตาลกลูโคส แต่เมื่อเพื่อนตกอยู่ในอันตราย จะไม่มีใครหยุดเขาได้",
+    goal:"ใช้ชีวิตอย่างอิสระและปกป้องคนที่อยู่ข้างๆ",
+    quote:"\"ดวงตาที่คุณมี ดวงตาเหล่านั้นไม่ได้มองสิ่งที่อยู่ตรงหน้า แต่มองไปข้างหน้าเสมอ\"",
+    trivia:"ติดหนังสือการ์ตูน Jump อย่างหนักและอ่านทุกสัปดาห์โดยไม่ขาด"
+  },
+  {
+    name:"เคนชิน ฮิมุระ", anime:"Rurouni Kenshin", role:"เอก", emoji:"🗡️",
+    birthday:"ไม่ทราบ", age:"28 ปี", height:"158 cm", affiliation:"นักดาบเร่ร่อน",
+    bio:"เคนชินเป็นอดีตนักฆ่ารัฐบาลในยุคเมจิที่โด่งดังในชื่อ 'Hitokiri Battosai' นักฆ่าระดับตำนาน แต่หลังสงครามสิ้นสุด เขาสาบานว่าจะไม่ฆ่าอีกและพกดาบที่คมกลับด้านเพื่อปกป้องโดยไม่สังหาร เขาเดินทางไปทั่วเพื่อชดใช้กรรมในอดีต",
+    goal:"ปกป้องผู้คนโดยไม่ต้องฆ่า และชดใช้บาปในอดีต",
+    quote:"\"ข้าจะไม่ฆ่าอีก...นี่คือคำสัญญาของข้า\"",
+    trivia:"พูดว่า 'de gozaru' ซึ่งเป็นภาษาญี่ปุ่นโบราณที่สุภาพมากในประโยคทุกประโยค"
+  },
+];
+
+// ── CHAR OF DAY LOGIC ──
+function getDailyChar(){
+  const d = new Date();
+  const seed = d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+  return CHAR_PROFILES[seed % CHAR_PROFILES.length];
+}
+
+function initCharOfDay(){
+  const c = getDailyChar();
+  const el = document.getElementById('todayCharName');
+  if(el) el.textContent = c.name + ' · ' + c.anime;
+}
+
+function openCharOfDay(){
+  const c = getDailyChar();
+  const d = new Date();
+  const dateStr = `${d.getDate()} ${['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'][d.getMonth()]} ${d.getFullYear()+543}`;
+  const bg = hashColor(c.name);
+
+  document.getElementById('codBox').innerHTML = `
+    <div class="cod-header">
+      <div class="cod-date-badge">📅 ตัวละครประจำวัน — ${dateStr}</div>
+      <h2>ตัวละครประจำวัน</h2>
+      <div class="cod-char-row">
+        <div class="cod-avatar" style="background:${bg}">
+          ${c.img
+            ? `<img src="${c.img}" onerror="this.parentNode.innerHTML='<span style=\\'font-size:2.2rem\\'>${c.emoji}</span>'">`
+            : `<span style="font-size:2.2rem">${c.emoji}</span>`}
+        </div>
+        <div>
+          <div class="cod-name">${c.name}</div>
+          <div class="cod-anime">📺 ${c.anime}</div>
+          <div class="cod-role-badge">${c.role === 'เอก' ? '⭐ ตัวเอก' : c.role === 'ร้าย' ? '😈 ตัวร้าย' : '🤝 ตัวสมทบ'}</div>
+        </div>
+      </div>
+    </div>
+    <div class="cod-body">
+      <div class="cod-section">
+        <div class="cod-section-title">📋 ข้อมูลพื้นฐาน</div>
+        <div class="cod-stats-grid">
+          <div class="cod-stat"><div class="cod-stat-label">🎂 วันเกิด</div><div class="cod-stat-val">${c.birthday}</div></div>
+          <div class="cod-stat"><div class="cod-stat-label">🗓️ อายุ</div><div class="cod-stat-val">${c.age}</div></div>
+          <div class="cod-stat"><div class="cod-stat-label">📏 ส่วนสูง</div><div class="cod-stat-val">${c.height}</div></div>
+          <div class="cod-stat"><div class="cod-stat-label">🏴 สังกัด</div><div class="cod-stat-val">${c.affiliation}</div></div>
+        </div>
+      </div>
+      <div class="cod-section">
+        <div class="cod-section-title">📖 ประวัติ</div>
+        <div class="cod-bio">${c.bio}</div>
+      </div>
+      <div class="cod-section">
+        <div class="cod-section-title">🎯 เป้าหมาย</div>
+        <div class="cod-bio">${c.goal}</div>
+      </div>
+      <div class="cod-section">
+        <div class="cod-section-title">💬 คำพูดเด็ด</div>
+        <div class="cod-quote">${c.quote}</div>
+      </div>
+      <div class="cod-section">
+        <div class="cod-section-title">💡 น่ารู้</div>
+        <div class="cod-bio">${c.trivia}</div>
+      </div>
+      <button class="cod-close-btn" onclick="closeCharOfDay()">✕ ปิด</button>
+    </div>`;
+
+  document.getElementById('codOverlay').style.display = 'flex';
+}
+
+function closeCharOfDay(){
+  document.getElementById('codOverlay').style.display = 'none';
+}
+
+document.getElementById('codOverlay').addEventListener('click', e => {
+  if(e.target === document.getElementById('codOverlay')) closeCharOfDay();
+});
+
+window.openCharOfDay = openCharOfDay;
+window.closeCharOfDay = closeCharOfDay;
+</script>
+</body>
+</html>
