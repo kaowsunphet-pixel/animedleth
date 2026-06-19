@@ -804,34 +804,20 @@ body.theme-cherry .hero{background:linear-gradient(135deg,#fbcfe8,#fce7f3,#fdf4f
 }
 .cod-close-btn:hover{opacity:0.88;}
 
-/* ==========================
-   ENHANCED MOBILE RESPONSIVE
-========================== */
-@media (max-width: 768px){
+/* ===== MOBILE FIRST UPGRADE ===== */
+html,body{
+  max-width:100%;
+  overflow-x:hidden;
+}
+img{
+  max-width:100%;
+  height:auto;
+}
 
-  .navbar{
-    padding:10px;
-    height:auto;
-    flex-wrap:wrap;
-    gap:10px;
-  }
-
-  .logo{font-size:1.2rem;}
-
-  .nav-links{
-    width:100%;
-    justify-content:center;
-    flex-wrap:wrap;
-  }
-
-  .nav-link{
-    padding:6px 10px;
-    font-size:0.8rem;
-  }
-
+@media (max-width:900px){
   .page-wrap{
     grid-template-columns:1fr !important;
-    padding:10px !important;
+    padding:12px !important;
   }
 
   .left-panel,
@@ -839,41 +825,39 @@ body.theme-cherry .hero{background:linear-gradient(135deg,#fbcfe8,#fce7f3,#fdf4f
     display:none !important;
   }
 
-  .center-panel{
+  .navbar{
+    height:auto;
+    padding:10px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .nav-links{
     width:100%;
+    justify-content:center;
+    flex-wrap:wrap;
   }
 
-  .hero{
-    padding:18px;
-    min-height:auto;
+  .hero-bubbles{
+    display:none;
   }
-
-  .hero-text h1{font-size:1.4rem;}
-  .hero-text p{font-size:0.8rem;}
-
-  .hero-bubbles{display:none;}
 
   .daily-row{
     grid-template-columns:1fr;
-  }
-
-  .daily-card{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:12px;
-  }
-
-  .daily-btn{
-    width:100%;
   }
 
   .search-row{
     flex-direction:column;
   }
 
-  .shuffle-btn{
+  .shuffle-btn,
+  .daily-btn,
+  .action-btn{
     width:100%;
-    height:44px;
+  }
+
+  .action-row{
+    flex-direction:column;
   }
 
   .col-headers{
@@ -881,49 +865,54 @@ body.theme-cherry .hero{background:linear-gradient(135deg,#fbcfe8,#fce7f3,#fdf4f
   }
 
   .result-table{
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
   }
 
   .result-row{
-    min-width:900px;
+    display:block !important;
+    min-width:auto !important;
+    background:var(--white);
+    border-radius:16px;
+    padding:12px;
+    box-shadow:var(--shadow2);
   }
 
-  .action-row{
-    flex-direction:column;
-  }
-
-  .action-btn{
-    width:100%;
-    justify-content:center;
-  }
-
-  .login-box{
-    padding:24px;
+  .result-row .rc{
+    margin-bottom:6px;
+    min-height:40px;
+    border-radius:10px;
   }
 
   .modal-box,
   .shop-box,
-  .minigame-box,
-  .cod-box{
-    width:95vw;
+  .cod-box,
+  .minigame-box{
+    width:95vw !important;
     max-height:90vh;
   }
 
-  .cod-char-row{
-    flex-direction:column;
-    text-align:center;
+  footer{
+    padding-bottom:30px;
+  }
+}
+
+@media (max-width:600px){
+  .logo{
+    font-size:1.15rem;
   }
 
-  .shop-grid{
-    grid-template-columns:1fr;
+  .hero{
+    padding:16px;
   }
 
-  .levelup-toast{
-    left:10px;
-    right:10px;
-    top:70px;
-    width:auto;
+  .hero-text h1{
+    font-size:1.35rem;
+  }
+
+  .hero-text p{
+    font-size:0.85rem;
   }
 
   .coin-display,
