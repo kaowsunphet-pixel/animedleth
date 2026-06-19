@@ -2,8 +2,23 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Animedle - ทายตัวละครอนิเมะ</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#FF6B9D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Animedle">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- SEO -->
+<meta name="description" content="ท้าทายความรู้อนิเมะของคุณ! ทายตัวละครจากซีรีส์ดังมากกว่า 240 ตัว">
+<meta property="og:title" content="Animedle - ทายตัวละครอนิเมะ">
+<meta property="og:description" content="ท้าทายความรู้อนิเมะของคุณ!">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&family=Kanit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -1121,7 +1136,7 @@ if(!CONFIGURED){
 
 <script>
 const characters = [
-  {name:"มังกี ดี ลูฟี่", img:"https://cdn.myanimelist.net/images/characters/9/310307.jpg", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:174, age:19, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
+  {name:"มังกี ดี ลูฟี่", img:"https://i.imgur.com/EqTGCmi.gif", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:174, age:19, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
   {name:"โรโรโนอา โซโร", img:"https://cdn.myanimelist.net/images/characters/3/100534.jpg", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"เขียว", height:181, age:21, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
   {name:"นามิ", anime:"One Piece", gender:"หญิง", species:"มนุษย์", hair:"ส้ม", height:170, age:20, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
   {name:"อุซอปป์", anime:"One Piece", gender:"ชาย", species:"มนุษย์", hair:"ดำ", height:176, age:19, affiliation:"หมวกฟาง", year:1997, role:"เอก", status:"มีชีวิต"},
@@ -2317,6 +2332,16 @@ document.getElementById('codOverlay').addEventListener('click', e => {
 
 window.openCharOfDay = openCharOfDay;
 window.closeCharOfDay = closeCharOfDay;
+</script>
+<!-- PWA Service Worker -->
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(r => console.log('SW registered'))
+      .catch(e => console.log('SW error', e));
+  });
+}
 </script>
 </body>
 </html>
